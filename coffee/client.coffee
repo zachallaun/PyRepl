@@ -7,4 +7,3 @@ $ ->
 
   $("#python-runtime").on 'load', (event) ->
     PyREPL watcher.act
-    spinner.stop()

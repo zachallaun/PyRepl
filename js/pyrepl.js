@@ -48,6 +48,8 @@
           return 1;
         } else if (indent.length && !/^\s*$/.test(last_line)) {
           return 0;
+        } else if (last_line[last_line.length - 1] === '\\') {
+          return 0;
         } else {
           return false;
         }
