@@ -15,7 +15,8 @@
     })();
     watcher = new PyWatcher();
     return $("#python-runtime").on('load', function(event) {
-      return PyREPL(watcher.act);
+      PyREPL(watcher.act);
+      return spinner.stop();
     });
   });
 

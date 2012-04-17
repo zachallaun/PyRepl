@@ -4,5 +4,7 @@ $ ->
       console.log c, r, o
 
   watcher = new PyWatcher()
+
   $("#python-runtime").on 'load', (event) ->
     PyREPL watcher.act
+    spinner.stop()
