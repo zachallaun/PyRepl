@@ -1,0 +1,79 @@
+@font-face {
+    font-family: 'Inconsolata';
+    src: url('font/Inconsolata-webfont.eot');
+    src: url('font/Inconsolata-webfont.eot?#iefix') format('embedded-opentype'),
+         url('font/Inconsolata-webfont.woff') format('woff'),
+         url('font/Inconsolata-webfont.ttf') format('truetype'),
+         url('font/Inconsolata-webfont.svg#InconsolataMedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+html, body {
+  background-color: #073642;
+  color: #cb4b16;
+  font-family: Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  color: #eee8d5;
+  text-align: center;
+  font-size: 70px;
+  line-height: 30px;
+  text-shadow: -5px -5px #cb4b16,
+               -4px -4px #cb4b16,
+               -3px -3px #cb4b16,
+               -2px -2px #cb4b16,
+               -1px -1px #cb4b16;
+}
+pre {
+  font-family: Inconsolata;
+}
+#console {
+  height: 400px;
+  width: 750px;
+  position:relative;
+  background-color: #eee8d5;
+  border: 2px solid #93a1a1;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+.jqconsole {
+  padding: 10px;
+  padding-bottom: 10px;
+}
+.jqconsole-header {
+  color: #d33682;
+}
+.jqconsole-cursor {
+  background-color: #839496;
+}
+.jqconsole-blurred .jqconsole-cursor {
+  background-color: #93a1a1;
+}
+.jqconsole-prompt {
+  color: #073642;
+}
+.jqconsole-old-prompt {
+  color: #657b83;
+  font-weight: normal;
+}
+.jqconsole-input {
+  color: #93a1a1;
+}
+.jqconsole-old-input {
+  color: #93a1a1;
+  font-weight: normal;
+}
+.brace {
+  color: #6c71c4;
+}
+.paren {
+  color: #268bd2;
+}
+.bracket {
+  color: #859900;
+}
+.jqconsole-composition {
+  background-color: red;
+}
