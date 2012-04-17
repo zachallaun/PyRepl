@@ -1,5 +1,8 @@
 $ ->
-  repl = new PyREPL ->
-    console.log "proc"
+  class PyWatcher
+    act: (c, r, o) ->
+      console.log c, r, o
 
-  repl.handler()
+  watcher = new PyWatcher()
+  $("#python-runtime").on 'load', (event) ->
+    PyREPL watcher.act

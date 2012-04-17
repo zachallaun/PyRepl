@@ -1,4 +1,4 @@
-$ ->
+window.PyREPL = (cb) ->
   # Create the console.
   header = 'Python 2.7.2 (default, Jul 31 2011, 19:30:53)\n' +
            '[GCC 4.2.1 (LLVM, Emscripten 1.5, Empythoned)]\n'
@@ -62,6 +62,8 @@ $ ->
       if command
         result = Python.eval command
         out = outBuffer.join('')
+        # Pass the command, result, and out to callback
+        cb(command, result, out)
         if result?
           jqconsole.Write insertNls('=> ' + result + '\n', 90)
         else if out?
