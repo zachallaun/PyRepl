@@ -15,11 +15,11 @@ html, body {
   margin: 0;
   padding: 0;
 }
-h1 {
+h1.standout {
   color: #eee8d5;
   text-align: center;
-  font-size: 70px;
-  line-height: 30px;
+  font-size: 50px;
+  line-height: 35px;
   text-shadow: -5px -5px #cb4b16,
                -4px -4px #cb4b16,
                -3px -3px #cb4b16,
@@ -29,14 +29,34 @@ h1 {
 pre {
   font-family: Inconsolata;
 }
-#console {
-  height: 400px;
+.wrapper {
   width: 750px;
+  margin: 0 auto;
+  margin-top: 0;
+}
+#console {
+  height: 325px;
   position:relative;
   background-color: #eee8d5;
   border: 2px solid #93a1a1;
-  margin: 0 auto;
-  margin-top: 50px;
+}
+#exercise {
+  max-height: 250px;
+  overflow: scroll;
+  position:relative;
+  margin-top: 20px;
+  background-color: #eee8d5;
+  border: 2px solid #93a1a1;
+  padding: 0 20px;
+}
+p {
+  font-size: 18px;
+  color: #073642;
+}
+code {
+  color: #d33682;
+  /*background-color: #073642;*/
+  padding: 0 2px;
 }
 .jqconsole {
   padding: 10px;

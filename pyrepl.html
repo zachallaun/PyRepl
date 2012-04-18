@@ -4,10 +4,23 @@
     <link rel="stylesheet" href="style/ansi.css"/>
     <link rel="stylesheet" href="style/pyrepl.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="http://caja.appspot.com/caja.js" type="text/javascript"></script>
   </head>
 <body>
-  <h1>PyREPL</h1>
-  <div id="console"></div>
+  <h1 class="standout">PyREPL: Lists</h1>
+  <div class="wrapper">
+    <div id="console"></div>
+    <div id="exercise">
+      <p>
+        <strong>Welcome to the list module.</strong> Let's learn about some Python lists!
+      </p>
+      <p>
+        A Python <code>list</code> is a very useful data type, allowing you to store multiple items sequentially in a data structure. To create a list, surround comma separated values by brackets: <code>[...]</code>. Create a list containing the numbers 1, 2, and 3 by typing <code>[1, 2, 3]</code>.
+      </p>
+    </div>
+  </div>
+
+  <!-- Scripts at the bottom! -->
   <script src="js/jqconsole-2.7.min.js" type="text/javascript"></script>
   <script src="js/pyrepl.js" type="text/javascript"></script>
   <script src="js/client.js" type="text/javascript"></script>
