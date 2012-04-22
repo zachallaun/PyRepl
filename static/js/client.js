@@ -26,7 +26,7 @@
       Tutor.prototype.watch = function(c, r, o) {
         var _this = this;
         return caja.load(void 0, void 0, function(frame) {
-          return frame.code(_this.current.url, 'application/javascript', _this.current.fn).api({
+          return frame.code(window.location.host + _this.current.url, 'application/javascript', _this.current.fn).api({
             code: c,
             result: r,
             output: o
