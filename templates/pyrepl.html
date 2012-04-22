@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="style/ansi.css"/>
-    <link rel="stylesheet" href="style/pyrepl.css"/>
+    <link rel="stylesheet" href="{{url_for('static', filename='style/ansi.css')}}"/>
+    <link rel="stylesheet" href="{{url_for('static', filename='style/pyrepl.css')}}"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="http://caja.appspot.com/caja.js" type="text/javascript"></script>
   </head>
@@ -21,9 +21,9 @@
   </div>
 
   <!-- Scripts at the bottom! -->
-  <script src="js/jqconsole-2.7.min.js" type="text/javascript"></script>
-  <script src="js/pyrepl.js" type="text/javascript"></script>
-  <script src="js/client.js" type="text/javascript"></script>
-  <script id="python-runtime" src="js/python.opt.js" type="text/javascript" async></script>
+  <script src="{{url_for('static', filename='js/jqconsole-2.7.min.js')}}" type="text/javascript"></script>
+  <script src="{{url_for('static', filename='js/pyrepl.js')}}" type="text/javascript"></script>
+  <script src="{{url_for('static', filename='js/client.js')}}" type="text/javascript"></script>
+  <script id="python-runtime" src="{{url_for('static', filename='js/python.opt.js')}}" type="text/javascript" async></script>
 </body>
 </html>

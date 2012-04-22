@@ -2,7 +2,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   $(function() {
-    var Tutor, exObj, exercises, fnOrTrue, parseFn, testFiles, tutor;
+    var Tutor, exObj, fnOrTrue, parseFn, testFiles;
     Tutor = (function() {
 
       function Tutor(exercises) {
@@ -71,11 +71,8 @@
       task: "This is the first task.",
       url: testFiles[0]
     };
-    exObj.fn = parseFn(exObj.url);
-    exercises = [exObj];
-    tutor = new Tutor(exercises);
     return $("#python-runtime").on('load', function(event) {
-      return PyREPL(tutor.watch);
+      return PyREPL(function() {});
     });
   });
 

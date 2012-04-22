@@ -42,10 +42,11 @@ $ ->
     task: "This is the first task."
     url: testFiles[0]
 
-  exObj.fn = parseFn exObj.url
+  # exObj.fn = parseFn exObj.url
 
-  exercises = [exObj]
-  tutor = new Tutor(exercises)
+  # exercises = [exObj]
+  # tutor = new Tutor(exercises)
 
   $("#python-runtime").on 'load', (event) ->
-    PyREPL tutor.watch
+    # PyREPL tutor.watch
+    PyREPL ->
