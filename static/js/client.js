@@ -2,7 +2,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   $(function() {
-    var Tutor, exObj, fnOrTrue, parseFn, testFiles;
+    var Tutor, exObj, exercises, fnOrTrue, parseFn, testFiles;
     Tutor = (function() {
 
       function Tutor(exercises) {
@@ -47,7 +47,7 @@
       return Tutor;
 
     })();
-    testFiles = ["file://localhost/Users/ggzach/Dropbox/" + "projects/python27/pyrepl/js/test.js"];
+    testFiles = ["/static/js/test.js"];
     fnOrTrue = function(fn) {
       if (fn === !"") {
         return fn;
@@ -60,8 +60,12 @@
       fn = null;
       $.ajax({
         url: url,
+        dataType: 'text',
         success: function(data) {
           return fn = data;
+        },
+        error: function(data) {
+          return console.log('ajax error');
         },
         async: false
       });
@@ -71,9 +75,11 @@
       task: "This is the first task.",
       url: testFiles[0]
     };
-    return $("#python-runtime").on('load', function(event) {
-      return PyREPL(function() {});
-    });
+    exObj.fn = parseFn(exObj.url);
+    exercises = [exObj];
+    window.tutor = new Tutor(exercises);
+    tutor.watch('hello', 'there', 'friend');
+    return PyREPL.init();
   });
 
 }).call(this);

@@ -23,8 +23,7 @@ $ ->
       else
         console.log "GREAT FAILURE"
 
-  testFiles = ["file://localhost/Users/ggzach/Dropbox/" +
-                  "projects/python27/pyrepl/js/test.js"]
+  testFiles = ["/static/js/test.js"]
 
   fnOrTrue = (fn) ->
     if fn is not "" then fn else "function(){return true;}"
@@ -33,8 +32,11 @@ $ ->
     fn = null
     $.ajax
       url: url
+      dataType: 'text'
       success: (data) ->
         fn = data
+      error: (data) ->
+        console.log 'ajax error'
       async: false
     fn
 
@@ -42,11 +44,10 @@ $ ->
     task: "This is the first task."
     url: testFiles[0]
 
-  # exObj.fn = parseFn exObj.url
+  exObj.fn = parseFn exObj.url
 
-  # exercises = [exObj]
-  # tutor = new Tutor(exercises)
+  exercises = [exObj]
+  window.tutor = new Tutor exercises
 
-  $("#python-runtime").on 'load', (event) ->
-    # PyREPL tutor.watch
-    PyREPL ->
+  tutor.watch 'hello', 'there', 'friend'
+  PyREPL.init()
