@@ -12,7 +12,7 @@ $ ->
 
     watch: (c, r, o) =>
       caja.load undefined, undefined, (frame) =>
-        frame.code(window.location.host + @current.url, 'application/javascript', @current.fn)
+        frame.code(window.location.origin + @current.url, 'application/javascript', @current.fn)
               .api(code: c, result: r, output: o)
               .run (fn) =>
                 @doTest fn
