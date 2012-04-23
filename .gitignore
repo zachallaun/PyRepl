@@ -3,3 +3,4 @@ lib/
 venv
 static/.webassets-cache
 static/js/scripts.js
+db
