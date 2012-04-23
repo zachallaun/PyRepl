@@ -22,6 +22,7 @@ $ ->
         $ex.html markdown.toHTML task
       else
         $ex.html markdown.toHTML "**AT'LL DO, PIG**"
+      $ex.fadeIn(1000)
 
     watch: (command, result) =>
       if @current.test
@@ -62,9 +63,12 @@ $ ->
       ]
       "api/exercise?q=#{JSON.stringify query}"
 
-  window.Lesson = Lesson
+  requestId = ->
+    unless window.location.hash
+      window.location.hash = "#2"
+    lesson_id = parseInt((window.location.hash.split "#")[1])
 
-  lesson = new Lesson 2
+  lesson = new Lesson requestId()
   if lesson.exercises?
     tutor = new Tutor lesson
     PyREPL.init tutor.watch

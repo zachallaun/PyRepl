@@ -2,7 +2,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   $(function() {
-    var Lesson, Tutor, lesson, tutor;
+    var Lesson, Tutor, lesson, requestId, tutor;
     Tutor = (function() {
 
       function Tutor(lesson) {
@@ -34,10 +34,11 @@
         var $ex;
         $ex = $("#exercise");
         if (task) {
-          return $ex.html(markdown.toHTML(task));
+          $ex.html(markdown.toHTML(task));
         } else {
-          return $ex.html(markdown.toHTML("**AT'LL DO, PIG**"));
+          $ex.html(markdown.toHTML("**AT'LL DO, PIG**"));
         }
+        return $ex.fadeIn(1000);
       };
 
       Tutor.prototype.watch = function(command, result) {
@@ -108,8 +109,12 @@
       return Lesson;
 
     })();
-    window.Lesson = Lesson;
-    lesson = new Lesson(2);
+    requestId = function() {
+      var lesson_id;
+      if (!window.location.hash) window.location.hash = "#2";
+      return lesson_id = parseInt((window.location.hash.split("#"))[1]);
+    };
+    lesson = new Lesson(requestId());
     if (lesson.exercises != null) {
       tutor = new Tutor(lesson);
       return PyREPL.init(tutor.watch);
