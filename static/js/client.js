@@ -2,7 +2,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   $(function() {
-    var Lesson, Tutor, tutor;
+    var Lesson, Tutor, lesson, tutor;
     Tutor = (function() {
 
       function Tutor(lesson) {
@@ -109,8 +109,13 @@
 
     })();
     window.Lesson = Lesson;
-    tutor = new Tutor(new Lesson(2));
-    return PyREPL.init(tutor.watch);
+    lesson = new Lesson(2);
+    if (lesson.exercises.length > 0) {
+      tutor = new Tutor(lesson);
+      return PyREPL.init(tutor.watch);
+    } else {
+      return PyREPL.init(function() {});
+    }
   });
 
 }).call(this);
