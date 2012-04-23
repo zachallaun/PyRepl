@@ -10,24 +10,29 @@ $ ->
 
     next: ->
       ex = @exercises[0]
+      @nextExercise if ex then ex.task else null
       if ex
         @exercises = @exercises[1..]
-        $("#exercise").html markdown.toHTML ex.task
         console.log ex.test
         return ex
+
+    nextExercise: (task) ->
+      $ex = $("#exercise")
+      if task
+        $ex.html markdown.toHTML task
       else
-        $("#exercise").html markdown.toHTML "**AT'LL DO, PIG**"
+        $ex.html markdown.toHTML "**AT'LL DO, PIG**"
 
     watch: (command, result) =>
-      @validate command, result, PyREPL.lastOutput
+      if @current.test
+        @validate command, result, PyREPL.lastOutput
 
     validate: (c, r, o) =>
-      if @current.test
-        caja.load undefined, undefined, (frame) =>
-          frame.code(window.location.origin, 'application/javascript', @current.test)
-                .api(code: c, result: r, output: o)
-                .run (fn) =>
-                  @doTest fn
+      caja.load undefined, undefined, (frame) =>
+        frame.code(window.location.origin, 'application/javascript', @current.test)
+              .api(code: c, result: r, output: o)
+              .run (fn) =>
+                @doTest fn
 
     doTest: (fn) ->
       if fn()
@@ -55,8 +60,10 @@ $ ->
         op: 'eq'
         val: id
       ]
-      "api/exercise?=#{JSON.stringify query}"
+      "api/exercise?q=#{JSON.stringify query}"
 
-  tutor = new Tutor new Lesson 1
+  window.Lesson = Lesson
+
+  tutor = new Tutor new Lesson 2
 
   PyREPL.init tutor.watch

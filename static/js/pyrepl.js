@@ -14,7 +14,7 @@
         result: $.proxy(this.ResultCB, this),
         error: $.proxy(this.ErrorCB, this),
         timeout: {
-          time: 10000,
+          time: 3000,
           callback: function() {
             _this.console.Write('Error: This is taking too long. Check for infinite loopage.\n', 'error');
             jsrepl.loadLanguage('python');

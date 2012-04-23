@@ -16,7 +16,7 @@ PyREPL =
       result: $.proxy @ResultCB, @
       error: $.proxy @ErrorCB, @
       timeout:
-        time: 10000
+        time: 3000
         callback: =>
           @console.Write 'Error: This is taking too long. Check for infinite loopage.\n', 'error'
           jsrepl.loadLanguage 'python'
