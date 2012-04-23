@@ -1,66 +1,16 @@
 (function() {
+  var PyREPL;
 
-  window.PyREPL = {
+  PyREPL = {
     init: function() {
-      var Evaluate, Output, Prompt, Result, from, header, insertNls, jsrepl, nextLineIndent, onOut, outBuffer, write,
-        _this = this;
-      header = 'Python 2.7.2 (default, Jul 31 2011, 19:30:53)\n' + '[GCC 4.2.1 (LLVM, Emscripten 1.5, Empythoned)]\n';
-      window.jqconsole = $('#console').jqconsole(header, '>>> ');
-      jqconsole.RegisterShortcut('Z', function() {
-        jqconsole.AbortPrompt();
-        return handler();
-      });
-      jqconsole.RegisterShortcut('A', function() {
-        jqconsole.MoveToStart();
-        return handler();
-      });
-      jqconsole.RegisterShortcut('E', function() {
-        jqconsole.MoveToEnd();
-        return handler();
-      });
-      jqconsole.RegisterMatching('{', '}', 'brace');
-      jqconsole.RegisterMatching('(', ')', 'paren');
-      jqconsole.RegisterMatching('[', ']', 'bracket');
-      insertNls = function(str, n) {
-        var i;
-        if ((str != null) && str.length > n) {
-          i = n;
-          while (i < str.length) {
-            str = str.substr(0, i) + '\n' + str.substr(i);
-            i += n;
-          }
-        }
-        return str;
-      };
-      outBuffer = [];
-      onOut = function(chr) {
-        if (chr != null) return outBuffer.push(String.fromCharCode(chr));
-      };
-      from = function(where) {
-        return function(toLog) {
-          return console.log(where, toLog);
-        };
-      };
-      write = function(o) {
-        if (o) {
-          if (o[-1] !== '\n') o = o + '\n';
-          jqconsole.Write(o);
-        }
-        return Prompt();
-      };
-      Output = function(o) {
-        jqconsole.Write(o);
-        return Prompt();
-      };
-      Result = function(r) {
-        if (r[-1] !== '\n') r = r + '\n';
-        return jqconsole.Write(r);
-      };
-      jsrepl = new JSREPL({
-        input: function() {},
-        output: Output,
-        result: Result,
-        error: Output,
+      this.header = 'Python 2.7.2 (default, Jul 31 2011, 19:30:53)\n' + '[GCC 4.2.1 (LLVM, Emscripten 1.5, Empythoned)]\n';
+      this.console = $("#console").jqconsole(this.header, ">>> ");
+      this.registerShortcuts();
+      this.jsrepl = new JSREPL({
+        input: $.proxy(this.InputCB, this),
+        output: $.proxy(this.OutputCB, this),
+        result: $.proxy(this.ResultCB, this),
+        error: $.proxy(this.ErrorCB, this),
         timeout: {
           time: 30000,
           callback: function(i) {
@@ -68,40 +18,103 @@
           }
         }
       });
-      jsrepl.loadLanguage('python', function() {
-        return Prompt();
+      window.jsrepl = this.jsrepl;
+      this.jsrepl.loadLanguage('python', $.proxy(this.Prompt, this), true);
+      return this.outBuffer = [];
+    },
+    registerShortcuts: function() {
+      var _this = this;
+      this.console.RegisterShortcut('Z', function() {
+        _this.console.AbortPrompt();
+        return _this.Prompt();
       });
-      Evaluate = function(command) {
-        if (command) {
-          return jsrepl.eval(command);
-        } else {
-          return Prompt();
+      this.console.RegisterShortcut('A', function() {
+        return _this.console.MoveToStart();
+      });
+      this.console.RegisterShortcut('E', function() {
+        return _this.console.MoveToEnd();
+      });
+      this.console.RegisterShortcut('K', function() {
+        return _this.console.ClearPromptText();
+      });
+      this.console.RegisterShortcut('N', function() {
+        return _this.console._HistoryNext();
+      });
+      this.console.RegisterShortcut('P', function() {
+        return _this.console._HistoryPrevious();
+      });
+      this.console.RegisterMatching('{', '}', 'brace');
+      this.console.RegisterMatching('(', ')', 'paren');
+      return this.console.RegisterMatching('[', ']', 'bracket');
+    },
+    insertNls: function(str, n) {
+      var i;
+      if ((str != null) && str.length > n) {
+        i = n;
+        while (i < str.length) {
+          str = str.substr(0, i) + '\n' + str.substr(i);
+          i += n;
         }
-      };
-      Prompt = function() {
-        return jqconsole.Prompt(true, Evaluate, nextLineIndent);
-      };
-      return nextLineIndent = function(command) {
-        var indent, last_line, lines;
-        lines = command.split('\n');
-        if (lines.length === 0) {
+      }
+      return str;
+    },
+    InputCB: function(callback) {
+      var _this = this;
+      this.console.Input(function(result) {
+        try {
+          return callback(result);
+        } catch (e) {
+          return _this.ErrorCB(e);
+        }
+      });
+    },
+    OutputCB: function(output, cls) {
+      return this.console.Write(output, cls);
+    },
+    ErrorCB: function(error) {
+      if (error[-1] !== '\n') error = error + '\n';
+      this.console.Write(String(error), 'error');
+      return this.Prompt();
+    },
+    ResultCB: function(result) {
+      if (result) {
+        if (result[-1] !== '\n') result = result + '\n';
+        this.console.Write("=> " + result);
+      }
+      return this.Prompt();
+    },
+    Evaluate: function(command) {
+      if (command) {
+        return this.jsrepl.eval(command);
+      } else {
+        return this.Prompt();
+      }
+    },
+    nextLineIndent: function(command) {
+      var indent, last_line, lines;
+      lines = command.split('\n');
+      if (lines.length === 0) {
+        return 0;
+      } else {
+        last_line = lines[lines.length - 1];
+        indent = last_line.match(/^\s*/)[0];
+        last_line = lines[lines.length - 1].replace(/\s+$/, '');
+        if (last_line[last_line.length - 1] === ':') {
+          return 1;
+        } else if (indent.length && !/^\s*$/.test(last_line)) {
+          return 0;
+        } else if (last_line[last_line.length - 1] === '\\') {
           return 0;
         } else {
-          last_line = lines[lines.length - 1];
-          indent = last_line.match(/^\s*/)[0];
-          last_line = lines[lines.length - 1].replace(/\s+$/, '');
-          if (last_line[last_line.length - 1] === ':') {
-            return 1;
-          } else if (indent.length && !/^\s*$/.test(last_line)) {
-            return 0;
-          } else if (last_line[last_line.length - 1] === '\\') {
-            return 0;
-          } else {
-            return false;
-          }
+          return false;
         }
-      };
+      }
+    },
+    Prompt: function() {
+      return this.console.Prompt(true, $.proxy(this.Evaluate, this), this.nextLineIndent);
     }
   };
+
+  window.PyREPL = PyREPL;
 
 }).call(this);

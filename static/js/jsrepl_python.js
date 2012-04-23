@@ -31,7 +31,7 @@
       try {
         result = this.Python.eval(encodeUtf8(command));
         if (result === void 0) {
-          return this.error(this.error_buffer.join('') || 'Unknown error.');
+          return this.error(this.error_buffer.join(''));
         } else {
           this.output(this.error_buffer.join(''));
           return this.result(result);

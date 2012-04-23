@@ -1,120 +1,108 @@
-window.PyREPL =
+PyREPL =
   init: ->
-    # Create the console.
-    header = 'Python 2.7.2 (default, Jul 31 2011, 19:30:53)\n' +
+    # Console prefs
+    @header = 'Python 2.7.2 (default, Jul 31 2011, 19:30:53)\n' +
              '[GCC 4.2.1 (LLVM, Emscripten 1.5, Empythoned)]\n'
-    window.jqconsole = $('#console').jqconsole header, '>>> ';
 
-    # Abort prompt on Ctrl+Z
-    jqconsole.RegisterShortcut 'Z', ->
-      jqconsole.AbortPrompt()
-      handler()
+    @console = $("#console").jqconsole @header, ">>> "
+    @registerShortcuts()
 
-    # Move to line start Ctrl+A
-    jqconsole.RegisterShortcut 'A', ->
-      jqconsole.MoveToStart()
-      handler()
-
-    # Move to line end Ctrl+E
-    jqconsole.RegisterShortcut 'E', ->
-      jqconsole.MoveToEnd()
-      handler()
-
-    jqconsole.RegisterMatching '{', '}', 'brace'
-    jqconsole.RegisterMatching '(', ')', 'paren'
-    jqconsole.RegisterMatching '[', ']', 'bracket'
-
-    # Insert newlines into a string every n characters
-    insertNls = (str, n) ->
-      if str? and str.length > n
-        i = n
-        while i < str.length
-          str = str.substr(0, i) + '\n' + str.substr(i)
-          i += n
-      str
-
-    # Initialize Python runtime
-    outBuffer = []
-    onOut = (chr) ->
-      if chr?
-        outBuffer.push String.fromCharCode chr
-
-    from = (where) ->
-      (toLog) ->
-        console.log where, toLog
-
-    write = (o) ->
-      if o
-        o = o + '\n' if o[-1] isnt '\n'
-        jqconsole.Write o
-      Prompt()
-
-    Output = (o) ->
-      jqconsole.Write o
-      Prompt()
-
-    Result = (r) ->
-      r = r + '\n' if r[-1] isnt '\n'
-      jqconsole.Write r
-
-    jsrepl = new JSREPL
-      input: ->
-      output: Output
-      result: Result
-      error: Output
+    @jsrepl = new JSREPL
+      input: $.proxy @InputCB, @
+      output: $.proxy @OutputCB, @
+      result: $.proxy @ResultCB, @
+      error: $.proxy @ErrorCB, @
       timeout:
         time: 30000
         callback: (i) ->
           console.log i
 
-    jsrepl.loadLanguage 'python', ->
-      Prompt()
+    # A hack. TODO: Understand coffeescript :|
+    window.jsrepl = @jsrepl
 
-    Evaluate = (command) =>
-      if command
-        jsrepl.eval command
-      else
-        Prompt()
+    @jsrepl.loadLanguage 'python', $.proxy(@Prompt, @), true
 
-    Prompt = ->
-      jqconsole.Prompt true, Evaluate, nextLineIndent
+    @outBuffer = []
 
-    #Python.initialize null, onOut, onOut
+  registerShortcuts: ->
+    # Abort prompt on Ctrl+Z
+    @console.RegisterShortcut 'Z', =>
+      @console.AbortPrompt()
+      @Prompt()
+    # Move to line start Ctrl+A
+    @console.RegisterShortcut 'A', =>
+      @console.MoveToStart()
+    # Move to line end Ctrl+E
+    @console.RegisterShortcut 'E', =>
+      @console.MoveToEnd()
+    # Kill prompt text
+    @console.RegisterShortcut 'K', =>
+      @console.ClearPromptText()
+    # CTRL+N and CTRL+P for next and previous history items
+    @console.RegisterShortcut 'N', =>
+      @console._HistoryNext()
+    @console.RegisterShortcut 'P', =>
+      @console._HistoryPrevious()
 
-    nextLineIndent = (command) ->
-      lines = command.split '\n'
-      if lines.length == 0
+    @console.RegisterMatching '{', '}', 'brace'
+    @console.RegisterMatching '(', ')', 'paren'
+    @console.RegisterMatching '[', ']', 'bracket'
+
+  # Insert newlines into a string every n characters
+  insertNls: (str, n) ->
+    if str? and str.length > n
+      i = n
+      while i < str.length
+        str = str.substr(0, i) + '\n' + str.substr(i)
+        i += n
+    str
+
+  InputCB: (callback) ->
+    @console.Input (result) =>
+      try
+        callback result
+      catch e
+        @ErrorCB e
+    return undefined
+
+  OutputCB: (output, cls) ->
+    @console.Write output, cls
+
+  ErrorCB: (error) ->
+    error = error + '\n' if error[-1] isnt '\n'
+    @console.Write String(error), 'error'
+    @Prompt()
+
+  ResultCB: (result) ->
+    if result
+      result = result + '\n' if result[-1] isnt '\n'
+      @console.Write "=> " + result
+    @Prompt()
+
+  Evaluate: (command) ->
+    if command
+      @jsrepl.eval command
+    else
+      @Prompt()
+
+  nextLineIndent: (command) ->
+    lines = command.split '\n'
+    if lines.length == 0
+      return 0
+    else
+      last_line = lines[lines.length - 1]
+      indent = last_line.match(/^\s*/)[0]
+      last_line = lines[lines.length - 1].replace /\s+$/, ''
+      if last_line[last_line.length - 1] == ':'
+        return 1
+      else if indent.length and not /^\s*$/.test last_line
+        return 0
+      else if last_line[last_line.length - 1] == '\\'
         return 0
       else
-        last_line = lines[lines.length - 1]
-        indent = last_line.match(/^\s*/)[0]
-        last_line = lines[lines.length - 1].replace /\s+$/, ''
-        if last_line[last_line.length - 1] == ':'
-          return 1
-        else if indent.length and not /^\s*$/.test last_line
-          return 0
-        else if last_line[last_line.length - 1] == '\\'
-          return 0
-        else
-          return false
+        return false
 
+  Prompt: ->
+    @console.Prompt true, $.proxy(@Evaluate, @), @nextLineIndent
 
-    # Handle a command
-    # handler = (command) ->
-    #   outBuffer = []
-    #   try
-    #     if command
-    #       result = Python.eval command
-    #       out = outBuffer.join('')
-    #       # Pass the command, result, and out to callback
-    #       cb(command, result, out)
-    #       if result?
-    #         jqconsole.Write insertNls('=> ' + result + '\n', 90)
-    #       else if out?
-    #         jqconsole.Write out
-    #   catch e
-    #     jqconsole.Write 'Internal Error: ' + e + '\n'
-
-    #   jqconsole.Prompt true, handler, nextLineIndent
-
-    # handler()
+window.PyREPL = PyREPL

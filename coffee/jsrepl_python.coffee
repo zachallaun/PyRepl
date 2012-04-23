@@ -18,7 +18,7 @@ class self.JSREPLEngine
     try
       result = @Python.eval encodeUtf8 command
       if result == undefined
-        @error @error_buffer.join('') or 'Unknown error.'
+        @error @error_buffer.join('')
       else
         @output @error_buffer.join ''
         @result result

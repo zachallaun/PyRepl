@@ -47,7 +47,7 @@
       return Tutor;
 
     })();
-    testFiles = ["/static/js/test.js"];
+    testFiles = ["/static/js/tests/test.js"];
     fnOrTrue = function(fn) {
       if (fn === !"") {
         return fn;

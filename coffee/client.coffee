@@ -23,7 +23,7 @@ $ ->
       else
         console.log "GREAT FAILURE"
 
-  testFiles = ["/static/js/test.js"]
+  testFiles = ["/static/js/tests/test.js"]
 
   fnOrTrue = (fn) ->
     if fn is not "" then fn else "function(){return true;}"
