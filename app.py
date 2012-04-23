@@ -15,13 +15,21 @@ db = SQLAlchemy(app)
 # Models
 class Lesson(db.Model):
   id = db.Column(db.Integer, primary_key=True)
+  title = db.Column(db.String(60))
+  exercises = db.relationship('Exercise', backref='lesson', lazy='select')
+
+class Exercise(db.Model):
+  id = db.Column(db.Integer, primary_key=True)
+  order = db.Column(db.Integer)
   task = db.Column(db.String())
-  test = db.Column(db.Unicode())
+  test = db.Column(db.String())
+  lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.id'))
 
 # Configure Restless
 manager = APIManager(app, flask_sqlalchemy_db=db)
 
-manager.create_api(Lesson, methods=['GET', 'POST', 'DELETE'])
+manager.create_api(Lesson, methods=['GET', 'POST', 'DELETE', 'PUT'])
+manager.create_api(Exercise, methods=['GET', 'POST', 'DELETE', 'PUT'])
 
 # Controller
 @app.route('/')

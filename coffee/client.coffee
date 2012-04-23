@@ -1,14 +1,22 @@
 $ ->
   class Tutor
-    constructor: (@exercises) ->
+    constructor: (@lesson) ->
+      $("h1.standout").append @lesson.title
+
+      @exercises = @lesson.exercises
       @current = @next()
       @completed = []
       caja.initialize cajaServer: 'https://caja.appspot.com', debug: true
 
     next: ->
       ex = @exercises[0]
-      @exercises = @exercises[1..]
-      return ex
+      if ex
+        @exercises = @exercises[1..]
+        $("#exercise").html markdown.toHTML ex.task
+        console.log ex.test
+        return ex
+      else
+        $("#exercise").html markdown.toHTML "**AT'LL DO, PIG**"
 
     watch: (command, result) =>
       @validate command, result, PyREPL.lastOutput
@@ -23,46 +31,32 @@ $ ->
 
     doTest: (fn) ->
       if fn()
-        console.log fn()
+        @next()
       else
         console.log "GREAT FAILURE"
 
-  # testFiles = ["/static/js/tests/test.js"]
+  class Lesson
+    constructor: (@id) ->
+      @getExercises @id
 
-  # fnOrTrue = (fn) ->
-  #   if fn is not "" then fn else "function(){return true;}"
+    getExercises: (id) ->
+      query = $.ajax
+        url: @exQuery id
+        method: 'GET'
+        dataType: 'json'
+        error: ->
+          console.log "Couldn't load Lesson id#{id}"
+        async: false
+      @exercises = JSON.parse(query.responseText)['objects']
 
-  # parseFn = (url) ->
-  #   fn = null
-  #   $.ajax
-  #     url: url
-  #     dataType: 'text'
-  #     success: (data) ->
-  #       fn = data
-  #     error: (data) ->
-  #       console.log 'ajax error'
-  #     async: false
-  #   fn
+    exQuery: (id) ->
+      query = filters: [
+        name: 'lesson_id'
+        op: 'eq'
+        val: id
+      ]
+      "api/exercise?=#{JSON.stringify query}"
 
-  getExercises = (url) ->
-    x = $.ajax
-      method: 'GET'
-      url: url
-      dataType: 'json'
-      error: ->
-        console.log 'ajax error'
-      async: false
-    return JSON.parse(x.responseText).objects
-
-  # exObj =
-  #   task: "This is the first task."
-  #   url: testFiles[0]
-
-  # exObj.fn = parseFn exObj.url
-
-  # exercises = [exObj]
-
-  exercises = getExercises('api/lesson')
-  tutor = new Tutor exercises
+  tutor = new Tutor new Lesson 1
 
   PyREPL.init tutor.watch

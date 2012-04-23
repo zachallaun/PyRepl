@@ -2,13 +2,15 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   $(function() {
-    var Tutor, exercises, getExercises, tutor;
+    var Lesson, Tutor, tutor;
     Tutor = (function() {
 
-      function Tutor(exercises) {
-        this.exercises = exercises;
+      function Tutor(lesson) {
+        this.lesson = lesson;
         this.validate = __bind(this.validate, this);
         this.watch = __bind(this.watch, this);
+        $("h1.standout").append(this.lesson.title);
+        this.exercises = this.lesson.exercises;
         this.current = this.next();
         this.completed = [];
         caja.initialize({
@@ -20,8 +22,14 @@
       Tutor.prototype.next = function() {
         var ex;
         ex = this.exercises[0];
-        this.exercises = this.exercises.slice(1);
-        return ex;
+        if (ex) {
+          this.exercises = this.exercises.slice(1);
+          $("#exercise").html(markdown.toHTML(ex.task));
+          console.log(ex.test);
+          return ex;
+        } else {
+          return $("#exercise").html(markdown.toHTML("**AT'LL DO, PIG**"));
+        }
       };
 
       Tutor.prototype.watch = function(command, result) {
@@ -45,7 +53,7 @@
 
       Tutor.prototype.doTest = function(fn) {
         if (fn()) {
-          return console.log(fn());
+          return this.next();
         } else {
           return console.log("GREAT FAILURE");
         }
@@ -54,21 +62,45 @@
       return Tutor;
 
     })();
-    getExercises = function(url) {
-      var x;
-      x = $.ajax({
-        method: 'GET',
-        url: url,
-        dataType: 'json',
-        error: function() {
-          return console.log('ajax error');
-        },
-        async: false
-      });
-      return JSON.parse(x.responseText).objects;
-    };
-    exercises = getExercises('api/lesson');
-    tutor = new Tutor(exercises);
+    Lesson = (function() {
+
+      function Lesson(id) {
+        this.id = id;
+        this.getExercises(this.id);
+      }
+
+      Lesson.prototype.getExercises = function(id) {
+        var query;
+        query = $.ajax({
+          url: this.exQuery(id),
+          method: 'GET',
+          dataType: 'json',
+          error: function() {
+            return console.log("Couldn't load Lesson id" + id);
+          },
+          async: false
+        });
+        return this.exercises = JSON.parse(query.responseText)['objects'];
+      };
+
+      Lesson.prototype.exQuery = function(id) {
+        var query;
+        query = {
+          filters: [
+            {
+              name: 'lesson_id',
+              op: 'eq',
+              val: id
+            }
+          ]
+        };
+        return "api/exercise?=" + (JSON.stringify(query));
+      };
+
+      return Lesson;
+
+    })();
+    tutor = new Tutor(new Lesson(1));
     return PyREPL.init(tutor.watch);
   });
 
