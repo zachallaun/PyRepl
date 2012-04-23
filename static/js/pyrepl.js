@@ -2,8 +2,9 @@
   var PyREPL;
 
   PyREPL = {
-    init: function() {
+    init: function(validate) {
       var _this = this;
+      this.validate = validate;
       this.header = 'Python 2.7.2 (default, Jul 31 2011, 19:30:53)\n' + '[GCC 4.2.1 (LLVM, Emscripten 1.5, Empythoned)]\n';
       this.console = $("#console").jqconsole(this.header, ">>> ");
       this.registerShortcuts();
@@ -23,8 +24,7 @@
         }
       });
       window.jsrepl = this.jsrepl;
-      this.jsrepl.loadLanguage('python', $.proxy(this.Prompt, this), true);
-      return this.outBuffer = [];
+      return this.jsrepl.loadLanguage('python', $.proxy(this.Prompt, this), true);
     },
     registerShortcuts: function() {
       var _this = this;
@@ -73,9 +73,11 @@
       });
     },
     OutputCB: function(output) {
+      this.lastOutput = output;
       if (output) return this.console.Write(output, 'output');
     },
     ErrorCB: function(error) {
+      this.lastOutput = error;
       if (error[-1] !== '\n') error = error + '\n';
       this.console.Write(String(error), 'error');
       return this.Prompt();
@@ -87,8 +89,22 @@
       }
       return this.Prompt();
     },
+    InitCallbacks: function() {
+      this.jsrepl.off('error');
+      this.jsrepl.on('error', $.proxy(this.ErrorCB, this));
+      this.jsrepl.off('result');
+      return this.jsrepl.on('result', $.proxy(this.ResultCB, this));
+    },
     Evaluate: function(command) {
+      var _this = this;
       if (command) {
+        this.InitCallbacks();
+        this.jsrepl.once('error', function() {
+          return _this.validate(command);
+        });
+        this.jsrepl.once('result', function(result) {
+          return _this.validate(command, result);
+        });
         return this.jsrepl.eval(command);
       } else {
         return this.Prompt();

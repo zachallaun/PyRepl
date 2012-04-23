@@ -2,11 +2,12 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   $(function() {
-    var Tutor, exObj, exercises, fnOrTrue, parseFn, testFiles;
+    var Tutor, exObj, exercises, fnOrTrue, parseFn, testFiles, tutor;
     Tutor = (function() {
 
       function Tutor(exercises) {
         this.exercises = exercises;
+        this.validate = __bind(this.validate, this);
         this.watch = __bind(this.watch, this);
         this.current = this.next();
         this.completed = [];
@@ -23,22 +24,28 @@
         return fn;
       };
 
-      Tutor.prototype.watch = function(c, r, o) {
-        var _this = this;
-        return caja.load(void 0, void 0, function(frame) {
-          return frame.code(window.location.origin + _this.current.url, 'application/javascript', _this.current.fn).api({
-            code: c,
-            result: r,
-            output: o
-          }).run(function(fn) {
-            return _this.doTest(fn);
-          });
-        });
+      Tutor.prototype.watch = function(command, result) {
+        return this.validate(command, result, PyREPL.lastOutput);
       };
 
-      Tutor.prototype.doTest = function(testfn) {
-        if (testfn()) {
-          return console.log(testfn());
+      Tutor.prototype.validate = function(c, r, o) {
+        var _this = this;
+        if (this.current.fn) {
+          return caja.load(void 0, void 0, function(frame) {
+            return frame.code(window.location.origin + _this.current.url, 'application/javascript', _this.current.fn).api({
+              code: c,
+              result: r,
+              output: o
+            }).run(function(fn) {
+              return _this.doTest(fn);
+            });
+          });
+        }
+      };
+
+      Tutor.prototype.doTest = function(fn) {
+        if (fn()) {
+          return console.log(fn());
         } else {
           return console.log("GREAT FAILURE");
         }
@@ -77,9 +84,8 @@
     };
     exObj.fn = parseFn(exObj.url);
     exercises = [exObj];
-    window.tutor = new Tutor(exercises);
-    tutor.watch('hello', 'there', 'friend');
-    return PyREPL.init();
+    tutor = new Tutor(exercises);
+    return PyREPL.init(tutor.watch);
   });
 
 }).call(this);

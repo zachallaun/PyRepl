@@ -10,16 +10,20 @@ $ ->
       @exercises = @exercises[1..]
       fn
 
-    watch: (c, r, o) =>
-      caja.load undefined, undefined, (frame) =>
-        frame.code(window.location.origin + @current.url, 'application/javascript', @current.fn)
-              .api(code: c, result: r, output: o)
-              .run (fn) =>
-                @doTest fn
+    watch: (command, result) =>
+      @validate command, result, PyREPL.lastOutput
 
-    doTest: (testfn) ->
-      if testfn()
-        console.log testfn()
+    validate: (c, r, o) =>
+      if @current.fn
+        caja.load undefined, undefined, (frame) =>
+          frame.code(window.location.origin + @current.url, 'application/javascript', @current.fn)
+                .api(code: c, result: r, output: o)
+                .run (fn) =>
+                  @doTest fn
+
+    doTest: (fn) ->
+      if fn()
+        console.log fn()
       else
         console.log "GREAT FAILURE"
 
@@ -47,7 +51,6 @@ $ ->
   exObj.fn = parseFn exObj.url
 
   exercises = [exObj]
-  window.tutor = new Tutor exercises
+  tutor = new Tutor exercises
 
-  tutor.watch 'hello', 'there', 'friend'
-  PyREPL.init()
+  PyREPL.init tutor.watch

@@ -310,7 +310,7 @@ class JSREPL extends EventEmitter
       listener = (args..., type) =>
         clearTimeout t
         if type is 'input'
-          @once 'recieved_input', => 
+          @once 'recieved_input', =>
             t = setTimeout cb, @timeout.time
           bind()
 

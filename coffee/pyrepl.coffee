@@ -1,10 +1,13 @@
 PyREPL =
-  init: ->
+  init: (validate) ->
+    @validate = validate
+
     # Console prefs
     @header = 'Python 2.7.2 (default, Jul 31 2011, 19:30:53)\n' +
              '[GCC 4.2.1 (LLVM, Emscripten 1.5, Empythoned)]\n'
 
     @console = $("#console").jqconsole @header, ">>> "
+
     @registerShortcuts()
 
     @jsrepl = new JSREPL
@@ -24,8 +27,6 @@ PyREPL =
     window.jsrepl = @jsrepl
 
     @jsrepl.loadLanguage 'python', $.proxy(@Prompt, @), true
-
-    @outBuffer = []
 
   registerShortcuts: ->
     # Abort prompt on Ctrl+Z
@@ -69,10 +70,12 @@ PyREPL =
     return undefined
 
   OutputCB: (output) ->
+    @lastOutput = output
     if output
       @console.Write output, 'output'
 
   ErrorCB: (error) ->
+    @lastOutput = error
     error = error + '\n' if error[-1] isnt '\n'
     @console.Write String(error), 'error'
     @Prompt()
@@ -83,8 +86,20 @@ PyREPL =
       @console.Write "=> " + result, 'result'
     @Prompt()
 
+  InitCallbacks: ->
+    @jsrepl.off 'error'
+    @jsrepl.on 'error', $.proxy(@ErrorCB, @)
+    @jsrepl.off 'result'
+    @jsrepl.on 'result', $.proxy(@ResultCB, @)
+
   Evaluate: (command) ->
     if command
+      # Remove old error callbacks
+      @InitCallbacks()
+      @jsrepl.once 'error', =>
+        @validate command
+      @jsrepl.once 'result', (result) =>
+        @validate command, result
       @jsrepl.eval command
     else
       @Prompt()
