@@ -110,7 +110,7 @@
     })();
     window.Lesson = Lesson;
     lesson = new Lesson(2);
-    if (lesson.exercises.length > 0) {
+    if (lesson.exercises != null) {
       tutor = new Tutor(lesson);
       return PyREPL.init(tutor.watch);
     } else {
