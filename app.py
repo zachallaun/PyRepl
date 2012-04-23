@@ -28,10 +28,13 @@ class Exercise(db.Model):
   test = db.Column(db.String())
   lesson_id = db.Column(db.Integer, db.ForeignKey('lesson.id'))
 
+db.create_all()
+
 # Configure Restless
 manager = APIManager(app, flask_sqlalchemy_db=db)
 
 manager.create_api(Lesson, methods=['GET', 'POST', 'DELETE', 'PUT'])
+# Lesson can include_columns=['title', 'exercises']
 manager.create_api(Exercise, methods=['GET', 'POST', 'DELETE', 'PUT'])
 
 # Controller
