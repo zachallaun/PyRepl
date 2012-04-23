@@ -31,7 +31,7 @@ $ ->
 
     doTest: (fn) ->
       if fn()
-        @next()
+        @current = @next()
       else
         console.log "GREAT FAILURE"
 

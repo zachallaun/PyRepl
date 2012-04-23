@@ -53,7 +53,7 @@
 
       Tutor.prototype.doTest = function(fn) {
         if (fn()) {
-          return this.next();
+          return this.current = this.next();
         } else {
           return console.log("GREAT FAILURE");
         }
