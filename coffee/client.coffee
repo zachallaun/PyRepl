@@ -65,7 +65,7 @@ $ ->
   window.Lesson = Lesson
 
   lesson = new Lesson 2
-  if lesson.exercises
+  if lesson.exercises.length > 0
     tutor = new Tutor lesson
     PyREPL.init tutor.watch
   else
