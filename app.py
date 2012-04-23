@@ -4,12 +4,15 @@ BASE_PATH = os.path.dirname(os.path.realpath(__file__))
 from flask import Flask
 app = Flask(__name__)
 
+from flask_heroku import Heroku
+heroku = Heroku(app)
+
 from flask import render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.restless import APIManager
 
 # Configure Flask-SQLAlchemy
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_PATH, 'db/test.db')
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_PATH, 'db/test.db')
 db = SQLAlchemy(app)
 
 # Models
