@@ -39,6 +39,14 @@ pre {
   position:relative;
   background-color: #eee8d5;
   border: 2px solid #93a1a1;
+  color: #268bd2;
+}
+#console .error {
+  color: #cb4b16;
+}
+span.result span, span.output span {
+  width: 700px;
+  word-wrap: break-word;
 }
 #exercise {
   max-height: 250px;

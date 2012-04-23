@@ -13,9 +13,12 @@ PyREPL =
       result: $.proxy @ResultCB, @
       error: $.proxy @ErrorCB, @
       timeout:
-        time: 30000
-        callback: (i) ->
-          console.log i
+        time: 10000
+        callback: =>
+          @console.Write 'Error: This is taking too long. Check for infinite loopage.\n', 'error'
+          jsrepl.loadLanguage 'python'
+          @Prompt()
+          return true
 
     # A hack. TODO: Understand coffeescript :|
     window.jsrepl = @jsrepl
@@ -65,8 +68,9 @@ PyREPL =
         @ErrorCB e
     return undefined
 
-  OutputCB: (output, cls) ->
-    @console.Write output, cls
+  OutputCB: (output) ->
+    if output
+      @console.Write output, 'output'
 
   ErrorCB: (error) ->
     error = error + '\n' if error[-1] isnt '\n'
@@ -76,7 +80,7 @@ PyREPL =
   ResultCB: (result) ->
     if result
       result = result + '\n' if result[-1] isnt '\n'
-      @console.Write "=> " + result
+      @console.Write "=> " + result, 'result'
     @Prompt()
 
   Evaluate: (command) ->

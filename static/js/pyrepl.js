@@ -3,6 +3,7 @@
 
   PyREPL = {
     init: function() {
+      var _this = this;
       this.header = 'Python 2.7.2 (default, Jul 31 2011, 19:30:53)\n' + '[GCC 4.2.1 (LLVM, Emscripten 1.5, Empythoned)]\n';
       this.console = $("#console").jqconsole(this.header, ">>> ");
       this.registerShortcuts();
@@ -12,9 +13,12 @@
         result: $.proxy(this.ResultCB, this),
         error: $.proxy(this.ErrorCB, this),
         timeout: {
-          time: 30000,
-          callback: function(i) {
-            return console.log(i);
+          time: 10000,
+          callback: function() {
+            _this.console.Write('Error: This is taking too long. Check for infinite loopage.\n', 'error');
+            jsrepl.loadLanguage('python');
+            _this.Prompt();
+            return true;
           }
         }
       });
@@ -68,8 +72,8 @@
         }
       });
     },
-    OutputCB: function(output, cls) {
-      return this.console.Write(output, cls);
+    OutputCB: function(output) {
+      if (output) return this.console.Write(output, 'output');
     },
     ErrorCB: function(error) {
       if (error[-1] !== '\n') error = error + '\n';
@@ -79,7 +83,7 @@
     ResultCB: function(result) {
       if (result) {
         if (result[-1] !== '\n') result = result + '\n';
-        this.console.Write("=> " + result);
+        this.console.Write("=> " + result, 'result');
       }
       return this.Prompt();
     },
