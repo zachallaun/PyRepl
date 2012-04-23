@@ -2,7 +2,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   $(function() {
-    var Tutor, exObj, exercises, fnOrTrue, parseFn, testFiles, tutor;
+    var Tutor, exercises, getExercises, tutor;
     Tutor = (function() {
 
       function Tutor(exercises) {
@@ -18,10 +18,10 @@
       }
 
       Tutor.prototype.next = function() {
-        var fn;
-        fn = this.exercises[0];
+        var ex;
+        ex = this.exercises[0];
         this.exercises = this.exercises.slice(1);
-        return fn;
+        return ex;
       };
 
       Tutor.prototype.watch = function(command, result) {
@@ -30,9 +30,9 @@
 
       Tutor.prototype.validate = function(c, r, o) {
         var _this = this;
-        if (this.current.fn) {
+        if (this.current.test) {
           return caja.load(void 0, void 0, function(frame) {
-            return frame.code(window.location.origin + _this.current.url, 'application/javascript', _this.current.fn).api({
+            return frame.code(window.location.origin, 'application/javascript', _this.current.test).api({
               code: c,
               result: r,
               output: o
@@ -54,36 +54,20 @@
       return Tutor;
 
     })();
-    testFiles = ["/static/js/tests/test.js"];
-    fnOrTrue = function(fn) {
-      if (fn === !"") {
-        return fn;
-      } else {
-        return "function(){return true;}";
-      }
-    };
-    parseFn = function(url) {
-      var fn;
-      fn = null;
-      $.ajax({
+    getExercises = function(url) {
+      var x;
+      x = $.ajax({
+        method: 'GET',
         url: url,
-        dataType: 'text',
-        success: function(data) {
-          return fn = data;
-        },
-        error: function(data) {
+        dataType: 'json',
+        error: function() {
           return console.log('ajax error');
         },
         async: false
       });
-      return fn;
+      return JSON.parse(x.responseText).objects;
     };
-    exObj = {
-      task: "This is the first task.",
-      url: testFiles[0]
-    };
-    exObj.fn = parseFn(exObj.url);
-    exercises = [exObj];
+    exercises = getExercises('api/lesson');
     tutor = new Tutor(exercises);
     return PyREPL.init(tutor.watch);
   });
