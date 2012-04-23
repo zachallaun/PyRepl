@@ -64,6 +64,9 @@ $ ->
 
   window.Lesson = Lesson
 
-  tutor = new Tutor new Lesson 2
-
-  PyREPL.init tutor.watch
+  lesson = new Lesson 2
+  if lesson.exercises
+    tutor = new Tutor lesson
+    PyREPL.init tutor.watch
+  else
+    PyREPL.init ->
