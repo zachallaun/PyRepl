@@ -12,7 +12,6 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.restless import APIManager
 
 # Configure Flask-SQLAlchemy
-
 if not app.config['SQLALCHEMY_DATABASE_URI']:
   app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(BASE_PATH, 'db/test.db')
 

@@ -1,26 +1,18 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>PyREPL</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='style/ansi.css')}}"/>
-    <link rel="stylesheet" href="{{url_for('static', filename='style/pyrepl.css')}}"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="http://caja.appspot.com/caja.js" type="text/javascript"></script>
-  </head>
-<body>
-  <h1 class="standout">PyREPL</h1>
-  <div class="wrapper">
-    <div id="console"></div>
-    <div id="exercise">
-    </div>
+{% extends "base.html" %}
+{% block main %}
+<h1 class="standout">PyREPL</h1>
+<div class="wrapper">
+  <div id="console"></div>
+  <div id="exercise">
   </div>
+</div>
 
-  <!-- Scripts at the bottom! -->
-  <script src="{{url_for('static', filename='js/jsrepl.js')}}" id="jsrepl-script"></script>
-  <script src="{{url_for('static', filename='js/jqconsole-2.7.min.js')}}"></script>
-  <script src="{{url_for('static', filename='js/markdown.js')}}"></script>
-  <script src="{{url_for('static', filename='js/pyrepl.js')}}"></script>
-  <script src="{{url_for('static', filename='js/client.js')}}"></script>
-  <script src="{{url_for('static', filename='js/languages.js')}}"></script>
-</body>
-</html>
+<!-- Scripts at the bottom! -->
+<script src="http://caja.appspot.com/caja.js" type="text/javascript"></script>
+<script src="{{url_for('static', filename='js/jsrepl.js')}}" id="jsrepl-script"></script>
+<script src="{{url_for('static', filename='js/jqconsole-2.7.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/markdown.js')}}"></script>
+<script src="{{url_for('static', filename='js/pyrepl.js')}}"></script>
+<script src="{{url_for('static', filename='js/client.js')}}"></script>
+<script src="{{url_for('static', filename='js/languages.js')}}"></script>
+{% endblock %}

@@ -9,7 +9,7 @@
         this.lesson = lesson;
         this.validate = __bind(this.validate, this);
         this.watch = __bind(this.watch, this);
-        $("h1.standout").append(this.lesson.title);
+        $("h1.standout").append(": " + this.lesson.title);
         this.exercises = this.lesson.exercises;
         this.current = this.next();
         this.completed = [];
@@ -74,15 +74,14 @@
     Lesson = (function() {
 
       function Lesson(id) {
-        this.id = id;
-        this.getExercises(this.id);
+        this.setExercises(id);
+        this.setTitle(id);
       }
 
-      Lesson.prototype.getExercises = function(id) {
+      Lesson.prototype.setExercises = function(id) {
         var query;
         query = $.ajax({
-          url: this.exQuery(id),
-          method: 'GET',
+          url: 'api/exercise' + this.buildEqQuery('lesson_id', id),
           dataType: 'json',
           error: function() {
             return console.log("Couldn't load Lesson id" + id);
@@ -92,18 +91,28 @@
         return this.exercises = JSON.parse(query.responseText)['objects'];
       };
 
-      Lesson.prototype.exQuery = function(id) {
+      Lesson.prototype.setTitle = function(id) {
+        var query;
+        query = $.ajax({
+          url: 'api/lesson' + this.buildEqQuery('id', id),
+          dataType: 'json',
+          async: false
+        });
+        return this.title = JSON.parse(query.responseText).objects[0].title;
+      };
+
+      Lesson.prototype.buildEqQuery = function(name, val) {
         var query;
         query = {
           filters: [
             {
-              name: 'lesson_id',
+              name: name,
               op: 'eq',
-              val: id
+              val: val
             }
           ]
         };
-        return "api/exercise?q=" + (JSON.stringify(query));
+        return "?q=" + (JSON.stringify(query));
       };
 
       return Lesson;

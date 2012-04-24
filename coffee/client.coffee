@@ -1,7 +1,7 @@
 $ ->
   class Tutor
     constructor: (@lesson) ->
-      $("h1.standout").append @lesson.title
+      $("h1.standout").append(": #{@lesson.title}")
 
       @exercises = @lesson.exercises
       @current = @next()
@@ -42,26 +42,33 @@ $ ->
         console.log "GREAT FAILURE"
 
   class Lesson
-    constructor: (@id) ->
-      @getExercises @id
+    constructor: (id) ->
+      @setExercises id
+      @setTitle id
 
-    getExercises: (id) ->
+    setExercises: (id) ->
       query = $.ajax
-        url: @exQuery id
-        method: 'GET'
+        url: 'api/exercise' + @buildEqQuery 'lesson_id', id
         dataType: 'json'
         error: ->
           console.log "Couldn't load Lesson id#{id}"
         async: false
       @exercises = JSON.parse(query.responseText)['objects']
 
-    exQuery: (id) ->
+    setTitle: (id) ->
+      query = $.ajax
+        url: 'api/lesson' + @buildEqQuery 'id', id
+        dataType: 'json'
+        async: false
+      @title = JSON.parse(query.responseText).objects[0].title
+
+    buildEqQuery: (name, val) ->
       query = filters: [
-        name: 'lesson_id'
+        name: name
         op: 'eq'
-        val: id
+        val: val
       ]
-      "api/exercise?q=#{JSON.stringify query}"
+      "?q=#{JSON.stringify query}"
 
   requestId = ->
     unless window.location.hash
