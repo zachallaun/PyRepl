@@ -44,6 +44,10 @@ manager.create_api(Exercise, methods=['GET', 'POST', 'DELETE', 'PUT'])
 def index():
   return render_template('pyrepl.html')
 
+@app.route('/create')
+def create():
+  return render_template('create.html')
+
 if __name__ == '__main__':
   port = int(os.environ.get('PORT', 5000))
   app.run(host='0.0.0.0', port=port)

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="wrapper">
+<h1 class="standout">CREATE</h1>
+<form>
+  <div id="lesson_input">
+    <input type="text" name="lesson_name" autocomplete="off" placeholder="Lesson Name" />
+  </div>
+  <div id="exercise_input">
+    <textarea name="task" placeholder="Describe the exercise task. Markdown allowed." rows="5" cols="50" ></textarea>
+    <textarea name="test" placeholder="Write an anonymous JavaScript function for validation." rows="5" cols="50" ></textarea>
+    <input type="submit" />
+  </div>
+</form>
+</div>
+<script src="{{url_for('static', filename='js/markdown.js')}}"></script>
+{% endblock %}
