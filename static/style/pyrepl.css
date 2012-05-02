@@ -116,6 +116,15 @@ form textarea {
   height: 150px;
 }
 
+.CodeMirror {
+  float: right;
+  width: 370px;
+}
+
+.CodeMirror-scroll {
+  height: 150px;
+}
+
 /********************************/
 /*****   jq console style   *****/
 /********************************/

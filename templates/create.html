@@ -2,6 +2,8 @@
 {% block title %}Create a Tutorial | PyREPL{% endblock %}
 {% block main %}
     <link rel="stylesheet" href="{{url_for('static', filename='style/ansi.css')}}"/>
+    <link rel="stylesheet" href="{{url_for('static', filename='style/codemirror.css')}}"/>
+    <link rel="stylesheet" href="{{url_for('static', filename='style/blackboard.css')}}"/>
     <link rel="stylesheet" href="{{url_for('static', filename='style/pyrepl.css')}}"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
   </head>
@@ -20,7 +22,11 @@
   <form>
     <div id="exercise_input">
       <textarea name="task" placeholder="###Describe the exercise task. Markdown allowed." rows="5" cols="50" ></textarea>
-      <textarea id="ex-test" name="test" placeholder="Write an anonymous JavaScript function for validation." rows="5" cols="50" ></textarea>
+      <textarea id="ex-code" name="test">
+function () {
+  // Validations go here. Return true or false.
+  return true;
+}</textarea>
       <input type="submit" />
     </div>
   </form>
@@ -35,5 +41,7 @@
 <script src="{{url_for('static', filename='js/languages.js')}}"></script>
 <script src="{{url_for('static', filename='js/create.js')}}"></script>
 <script src="{{url_for('static', filename='js/query.js')}}"></script>
+<script src="{{url_for('static', filename='js/codemirror.js')}}"></script>
+<script src="{{url_for('static', filename='js/javascript.js')}}"></script>
 </body>
 {% endblock %}

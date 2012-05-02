@@ -2,7 +2,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   $(function() {
-    var Tester, tester;
+    var Tester, codemirror, tester;
     Tester = (function() {
 
       function Tester() {
@@ -15,7 +15,7 @@
 
       Tester.prototype.watch = function(command, result) {
         var test;
-        test = $('#ex-test').val();
+        test = $('#ex-code').val();
         if (test) {
           this.test = test;
           return this.validate(command, result, PyREPL.lastOutput);
@@ -30,16 +30,18 @@
             result: r,
             output: o
           }).run(function(fn) {
-            return _this.doTest(fn);
+            return _this.doTest(fn, c, r, o);
           });
         });
       };
 
-      Tester.prototype.doTest = function(fn) {
+      Tester.prototype.doTest = function(fn, code, result, output) {
         if (fn()) {
-          return PyREPL.console.Write('Passed\n');
+          PyREPL.console.Write('Passed\n');
+          return console.log("code: " + code, "result: " + result, "output: " + output);
         } else {
-          return PyREPL.console.Write('Failed\n');
+          PyREPL.console.Write('Failed\n');
+          return console.log("code: " + code, "result: " + result, "output: " + output);
         }
       };
 
@@ -47,7 +49,19 @@
 
     })();
     tester = new Tester();
-    return PyREPL.init(tester.watch);
+    PyREPL.init(tester.watch);
+    codemirror = CodeMirror.fromTextArea(document.getElementById("ex-code"), {
+      mode: "javascript",
+      theme: "blackboard",
+      lineNumbers: true,
+      matchBrackets: true,
+      tabSize: 2,
+      lineWrapping: true,
+      onBlur: function() {
+        return document.getElementById("ex-code").value = codemirror.getValue();
+      }
+    });
+    return window.codemirror = codemirror;
   });
 
 }).call(this);
