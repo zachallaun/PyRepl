@@ -8,6 +8,7 @@
     font-weight: normal;
     font-style: normal;
 }
+
 html, body {
   background-color: #073642;
   color: #cb4b16;
@@ -15,6 +16,7 @@ html, body {
   margin: 0;
   padding: 0;
 }
+
 h1.standout {
   color: #eee8d5;
   text-align: center;
@@ -26,14 +28,17 @@ h1.standout {
                -2px -2px #cb4b16,
                -1px -1px #cb4b16;
 }
+
 pre {
   font-family: Inconsolata;
 }
+
 .wrapper {
   width: 750px;
   margin: 0 auto;
   margin-top: 0;
 }
+
 #console {
   height: 325px;
   position:relative;
@@ -41,13 +46,46 @@ pre {
   border: 2px solid #93a1a1;
   color: #268bd2;
 }
+
 #console .error {
   color: #cb4b16;
 }
+
+#console.create-console {
+  height: 200px;
+}
+
+#ex-list {
+  padding: 0;
+}
+
+#ex-list li {
+  margin-right: 5px;
+  padding: 0 5px;
+  padding-top: 2px;
+  border: 2px solid #93a1a1;
+  background-color: #eee8d5;
+  display: inline;
+  list-decoration: none;
+  cursor: pointer;
+}
+
+#ex-list li:hover {
+  background-color: #cb4b16;
+  color: #eee8d5;
+}
+
+#ex-list li.selected {
+  background-color: #cb4b16;
+  color: #eee8d5;
+  cursor: auto;
+}
+
 span.result span, span.output span {
   width: 700px;
   word-wrap: break-word;
 }
+
 #exercise {
   max-height: 250px;
   overflow: scroll;
@@ -58,51 +96,77 @@ span.result span, span.output span {
   padding: 0 20px;
   display: none;
 }
+
 p {
   font-size: 18px;
   color: #073642;
 }
+
 code {
   color: #d33682;
   /*background-color: #073642;*/
   padding: 0 2px;
 }
+
+form {
+  margin: 20px 0;
+}
+
+form textarea {
+  height: 150px;
+}
+
+/********************************/
+/*****   jq console style   *****/
+/********************************/
+
 .jqconsole {
   padding: 10px;
   padding-bottom: 10px;
 }
+
 .jqconsole-header {
   color: #d33682;
 }
+
 .jqconsole-cursor {
   background-color: #839496;
 }
+
 .jqconsole-blurred .jqconsole-cursor {
   background-color: #93a1a1;
 }
+
 .jqconsole-prompt {
   color: #073642;
 }
+
 .jqconsole-old-prompt {
   color: #657b83;
   font-weight: normal;
 }
+
 .jqconsole-input {
   color: #93a1a1;
 }
+
 .jqconsole-old-input {
   color: #93a1a1;
   font-weight: normal;
 }
+
 .brace {
   color: #6c71c4;
 }
+
 .paren {
   color: #268bd2;
 }
+
 .bracket {
   color: #859900;
 }
+
 .jqconsole-composition {
   background-color: red;
 }

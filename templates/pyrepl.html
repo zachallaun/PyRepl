@@ -1,5 +1,11 @@
 {% extends "base.html" %}
+{% block title %}Interactive Python Tutorial | PyREPL{% endblock %}
 {% block main %}
+    <link rel="stylesheet" href="{{url_for('static', filename='style/ansi.css')}}"/>
+    <link rel="stylesheet" href="{{url_for('static', filename='style/pyrepl.css')}}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+<body>
 <h1 class="standout">PyREPL</h1>
 <div class="wrapper">
   <div id="console"></div>
@@ -15,4 +21,5 @@
 <script src="{{url_for('static', filename='js/pyrepl.js')}}"></script>
 <script src="{{url_for('static', filename='js/client.js')}}"></script>
 <script src="{{url_for('static', filename='js/languages.js')}}"></script>
+</body>
 {% endblock %}

@@ -16,8 +16,6 @@
         timeout: {
           time: 3000,
           callback: function() {
-            _this.console.Write('Error: This is taking too long. Check for infinite loopage.\n', 'error');
-            jsrepl.loadLanguage('python');
             _this.Prompt();
             return true;
           }

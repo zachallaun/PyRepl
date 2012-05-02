@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PyREPL</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='style/ansi.css')}}"/>
-    <link rel="stylesheet" href="{{url_for('static', filename='style/pyrepl.css')}}"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-  </head>
-<body>
-{% block main %}{% endblock %}
-</body>
+    <title>{% block title %}PyREPL{% endblock %}</title>
+{% block main %}
+{% endblock %}
 </html>

@@ -18,8 +18,8 @@ PyREPL =
       timeout:
         time: 3000
         callback: =>
-          @console.Write 'Error: This is taking too long. Check for infinite loopage.\n', 'error'
-          jsrepl.loadLanguage 'python'
+          # @console.Write 'Error: This is taking too long. Check for infinite loopage.\n', 'error'
+          # jsrepl.loadLanguage 'python'
           @Prompt()
           return true
 
