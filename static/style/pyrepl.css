@@ -52,7 +52,7 @@ pre {
 }
 
 #console.create-console {
-  height: 200px;
+  height: 100px;
 }
 
 #ex-list {
@@ -113,16 +113,16 @@ form {
 }
 
 form textarea {
-  height: 150px;
+  height: 200px;
 }
 
 .CodeMirror {
   float: right;
-  width: 340px;
+  width: 365px;
 }
 
 .CodeMirror-scroll {
-  height: 150px;
+  height: 200px;
 }
 
 .first-CodeMirror {

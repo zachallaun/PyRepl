@@ -37,10 +37,12 @@ $ ->
       editor.save()
 
   mdEditor = CodeMirror.fromTextArea document.getElementById("ex-description"),
-    mode: "markdown"
+    mode: "text/x-markdown"
     theme: "blackboard"
     lineWrapping: true
     onChange: (editor) ->
       editor.save()
+      $("#exercise").html markdown.toHTML editor.getValue()
 
   $(".CodeMirror:first").addClass "first-CodeMirror"
+  $("#exercise").show().html markdown.toHTML mdEditor.getValue()

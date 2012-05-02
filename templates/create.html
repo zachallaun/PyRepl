@@ -21,13 +21,28 @@
 
   <form>
     <div id="exercise_input">
-      <textarea id="ex-description" name="task" placeholder="###Describe the exercise task. Markdown allowed." rows="5" cols="50" ></textarea>
-      <textarea id="ex-code" name="test">
+      <div>
+        <textarea id="ex-description" name="task">
+**Write your exercise in Markdown.** You'll see changes made as you edit.</textarea>
+      </div>
+      <div>
+        <textarea id="ex-code" name="test">
+// Javascript validation function.
+//
+// You have access to
+// the following variables:
+//
+// code   => What the user submits
+// result => What the code would return
+// output => Any output that would go to
+//           stdin or stderr
+
 function () {
-  // Validations go here. Return true or false.
+  // Must return true or false.
   return true;
 }</textarea>
-      <input type="submit" value="Save"/>
+      </div>
+      {# <input type="submit" value="Save"/> #}
     </div>
   </form>
 </div>
@@ -44,5 +59,6 @@ function () {
 <script src="{{url_for('static', filename='js/codemirror.js')}}"></script>
 <script src="{{url_for('static', filename='js/javascript.js')}}"></script>
 <script src="{{url_for('static', filename='js/markdown.js')}}"></script>
+<script src="{{url_for('static', filename='js/xml.js')}}"></script>
 </body>
 {% endblock %}

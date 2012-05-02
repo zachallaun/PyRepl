@@ -60,14 +60,16 @@
       }
     });
     mdEditor = CodeMirror.fromTextArea(document.getElementById("ex-description"), {
-      mode: "markdown",
+      mode: "text/x-markdown",
       theme: "blackboard",
       lineWrapping: true,
       onChange: function(editor) {
-        return editor.save();
+        editor.save();
+        return $("#exercise").html(markdown.toHTML(editor.getValue()));
       }
     });
-    return $(".CodeMirror:first").addClass("first-CodeMirror");
+    $(".CodeMirror:first").addClass("first-CodeMirror");
+    return $("#exercise").show().html(markdown.toHTML(mdEditor.getValue()));
   });
 
 }).call(this);
