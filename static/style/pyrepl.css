@@ -118,11 +118,15 @@ form textarea {
 
 .CodeMirror {
   float: right;
-  width: 370px;
+  width: 340px;
 }
 
 .CodeMirror-scroll {
   height: 150px;
+}
+
+.first-CodeMirror {
+  float: left;
 }
 
 /********************************/

@@ -2,7 +2,7 @@
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   $(function() {
-    var Tester, codemirror, tester;
+    var Tester, jsEditor, mdEditor, tester;
     Tester = (function() {
 
       function Tester() {
@@ -37,11 +37,9 @@
 
       Tester.prototype.doTest = function(fn, code, result, output) {
         if (fn()) {
-          PyREPL.console.Write('Passed\n');
-          return console.log("code: " + code, "result: " + result, "output: " + output);
+          return PyREPL.console.Write('Validation passed.\n');
         } else {
-          PyREPL.console.Write('Failed\n');
-          return console.log("code: " + code, "result: " + result, "output: " + output);
+          return PyREPL.console.Write('Validation failed.\n');
         }
       };
 
@@ -50,18 +48,26 @@
     })();
     tester = new Tester();
     PyREPL.init(tester.watch);
-    codemirror = CodeMirror.fromTextArea(document.getElementById("ex-code"), {
+    jsEditor = CodeMirror.fromTextArea(document.getElementById("ex-code"), {
       mode: "javascript",
       theme: "blackboard",
       lineNumbers: true,
       matchBrackets: true,
       tabSize: 2,
       lineWrapping: true,
-      onBlur: function() {
-        return document.getElementById("ex-code").value = codemirror.getValue();
+      onChange: function(editor) {
+        return editor.save();
       }
     });
-    return window.codemirror = codemirror;
+    mdEditor = CodeMirror.fromTextArea(document.getElementById("ex-description"), {
+      mode: "markdown",
+      theme: "blackboard",
+      lineWrapping: true,
+      onChange: function(editor) {
+        return editor.save();
+      }
+    });
+    return $(".CodeMirror:first").addClass("first-CodeMirror");
   });
 
 }).call(this);

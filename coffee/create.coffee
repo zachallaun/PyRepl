@@ -18,23 +18,29 @@ $ ->
 
     doTest: (fn, code, result, output) ->
       if fn()
-        PyREPL.console.Write 'Passed\n'
-        console.log "code: #{code}", "result: #{result}", "output: #{output}"
+        PyREPL.console.Write 'Validation passed.\n'
+        # console.log "code: #{code}", "result: #{result}", "output: #{output}"
       else
-        PyREPL.console.Write 'Failed\n'
-        console.log "code: #{code}", "result: #{result}", "output: #{output}"
+        PyREPL.console.Write 'Validation failed.\n'
 
   tester = new Tester()
   PyREPL.init tester.watch
 
-  codemirror = CodeMirror.fromTextArea document.getElementById("ex-code"),
+  jsEditor = CodeMirror.fromTextArea document.getElementById("ex-code"),
     mode: "javascript"
     theme: "blackboard"
     lineNumbers: true
     matchBrackets: true
     tabSize: 2
     lineWrapping: true
-    onBlur: ->
-      document.getElementById("ex-code").value = codemirror.getValue()
+    onChange: (editor) ->
+      editor.save()
 
-  window.codemirror = codemirror
+  mdEditor = CodeMirror.fromTextArea document.getElementById("ex-description"),
+    mode: "markdown"
+    theme: "blackboard"
+    lineWrapping: true
+    onChange: (editor) ->
+      editor.save()
+
+  $(".CodeMirror:first").addClass "first-CodeMirror"
