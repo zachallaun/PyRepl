@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Create a Tutorial | PyREPL{% endblock %}
+{% block main %}
+    <link rel="stylesheet" href="{{url_for('static', filename='style/pyrepl.css')}}"/>
+  </head>
+<body>
+<h1 class="standout">CREATE</h1>
+<form class="new-lesson">
+  <input id="lesson-name" type="text" placeholder="Lesson name"/>
+  <textarea id="lesson-description" placeholder="Enter a short lesson description." rows="5"></textarea>
+  <span class="ajax-error">Sorry, this is invalid. Try again.</span>
+  <span class="button">
+    <button id="submit">Make a new lesson</button>
+  </span>
+</form>
+
+<!-- Scripts at the bottom! -->
+<script src="{{url_for('static', filename='js/query.js')}}"></script>
+<script src="{{url_for('static', filename='js/new.js')}}"></script>
+</body>
+{% endblock %}

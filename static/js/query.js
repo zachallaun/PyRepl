@@ -7,7 +7,7 @@
       this.url = window.location.origin;
     }
 
-    Query.prototype.queryFor = function(resource, name, op, val) {
+    Query.prototype.filter = function(resource, name, op, val) {
       var query;
       query = {
         filters: [

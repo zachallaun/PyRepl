@@ -21,6 +21,7 @@ db = SQLAlchemy(app)
 class Lesson(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   title = db.Column(db.String(60))
+  description = db.Column(db.String())
   exercises = db.relationship('Exercise', backref='lesson', lazy='select')
 
 class Exercise(db.Model):
@@ -35,7 +36,7 @@ db.create_all()
 # Configure Restless
 manager = APIManager(app, flask_sqlalchemy_db=db)
 
-manager.create_api(Lesson, methods=['GET', 'POST', 'PUT'], include_columns=['id', 'title', 'exercises'])
+manager.create_api(Lesson, methods=['GET', 'POST', 'PUT'])
 # Lesson can include_columns=['title', 'exercises']
 manager.create_api(Exercise, methods=['GET', 'POST', 'PUT'])
 
@@ -47,6 +48,10 @@ def index():
 @app.route('/create')
 def create():
   return render_template('create.html')
+
+@app.route('/new')
+def new():
+  return render_template('new.html')
 
 if __name__ == '__main__':
   port = int(os.environ.get('PORT', 5000))

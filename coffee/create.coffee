@@ -46,3 +46,6 @@ $ ->
 
   $(".CodeMirror:first").addClass "first-CodeMirror"
   $("#exercise").show().html markdown.toHTML mdEditor.getValue()
+
+  window.jsEditor = jsEditor
+  window.mdEditor = mdEditor

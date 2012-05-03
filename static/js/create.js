@@ -69,7 +69,9 @@
       }
     });
     $(".CodeMirror:first").addClass("first-CodeMirror");
-    return $("#exercise").show().html(markdown.toHTML(mdEditor.getValue()));
+    $("#exercise").show().html(markdown.toHTML(mdEditor.getValue()));
+    window.jsEditor = jsEditor;
+    return window.mdEditor = mdEditor;
   });
 
 }).call(this);
