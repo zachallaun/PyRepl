@@ -75,6 +75,7 @@
           return $("#exercise").html(markdown.toHTML(editor.getValue()));
         }
       });
+      window.mdEditor = this.mdEditor;
       $(".CodeMirror:first").addClass("first-CodeMirror");
       $("#exercise").show();
     }
@@ -86,12 +87,21 @@
   ExerciseManager = (function() {
 
     function ExerciseManager(mirror) {
+      var _this = this;
       this.mirror = mirror;
       this.$exList = $("#ex-list");
-      this.$newEx = $("#new-ex");
       this.setLessonId();
       this.getLesson(this.lessonId);
       this.getExercises(this.lessonId);
+      this.$exList.on('click', 'li', function(ev) {
+        var target;
+        target = $(ev.currentTarget);
+        if (target.hasClass('new-ex')) {
+          return _this.buildDefault();
+        } else {
+          return _this.activate(parseInt(target.text()));
+        }
+      });
     }
 
     ExerciseManager.prototype.setLessonId = function() {
@@ -111,7 +121,7 @@
           if (data.length) {
             lesson = data[0];
             $("h2.title").text(lesson.title);
-            return $(".wrapper").show();
+            return $(".wrapper").removeClass('hidden');
           } else {
             return _this.exitToNew();
           }
@@ -143,7 +153,12 @@
     };
 
     ExerciseManager.prototype.buildDefault = function() {
-      this.exercises.push(defaultEx);
+      var ex;
+      ex = {
+        task: defaultEx.task,
+        test: defaultEx.test
+      };
+      this.exercises.push(ex);
       this.buildLinks();
       return this.activate(this.exercises.length);
     };
@@ -170,10 +185,20 @@
     ExerciseManager.prototype.activate = function(index) {
       var ex;
       this.select(index);
+      this.save();
       this.activeIndex = index - 1;
       ex = this.exercises[this.activeIndex];
       this.mirror.mdEditor.setValue(ex.task);
       return this.mirror.jsEditor.setValue(ex.test);
+    };
+
+    ExerciseManager.prototype.save = function() {
+      var ex;
+      if (this.activeIndex != null) {
+        ex = this.exercises[this.activeIndex];
+        ex.task = this.mirror.mdEditor.getValue();
+        return ex.test = this.mirror.jsEditor.getValue();
+      }
     };
 
     ExerciseManager.prototype.select = function(index) {

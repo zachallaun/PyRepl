@@ -11,7 +11,7 @@
         data: JSON.stringify(data),
         dataType: 'json',
         success: function(data) {
-          return console.log(data);
+          return window.location = window.location.origin + ("/create#" + data.id);
         },
         error: function(xhr, status, e) {
           return showError();

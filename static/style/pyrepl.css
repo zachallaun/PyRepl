@@ -18,7 +18,7 @@ html, body {
 }
 
 .hidden {
-  display: hidden;
+  display: none;
 }
 
 h1.standout {
@@ -128,7 +128,7 @@ code {
 }
 
 #exercise-input textarea {
-  display: none;
+  display: hidden;
 }
 
 .CodeMirror {

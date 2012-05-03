@@ -9,7 +9,7 @@ $ ->
       data: JSON.stringify data
       dataType: 'json'
       success: (data) ->
-        console.log data
+        window.location = window.location.origin + "/create##{data.id}"
       error: (xhr, status, e) ->
         showError()
 

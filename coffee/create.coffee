@@ -70,6 +70,8 @@ class CodeManager
         editor.save()
         $("#exercise").html markdown.toHTML editor.getValue()
 
+    window.mdEditor = @mdEditor
+
     $(".CodeMirror:first").addClass "first-CodeMirror"
     $("#exercise").show()#.html markdown.toHTML @mdEditor.getValue()
 
@@ -77,11 +79,17 @@ class CodeManager
 class ExerciseManager
   constructor: (@mirror) ->
     @$exList = $("#ex-list")
-    @$newEx = $("#new-ex")
 
     @setLessonId()
     @getLesson(@lessonId)
     @getExercises(@lessonId)
+
+    @$exList.on 'click', 'li', (ev) =>
+      target = $(ev.currentTarget)
+      if target.hasClass 'new-ex'
+        @buildDefault()
+      else
+        @activate parseInt target.text()
 
   setLessonId: ->
     unless window.location.hash
@@ -98,7 +106,7 @@ class ExerciseManager
         if data.length
           lesson = data[0]
           $("h2.title").text lesson.title
-          $(".wrapper").show()
+          $(".wrapper").removeClass 'hidden'
         else
           @exitToNew()
       error: (xhr, text, err) ->
@@ -119,7 +127,10 @@ class ExerciseManager
     @buildLinks()
 
   buildDefault: ->
-    @exercises.push defaultEx
+    ex =
+      task: defaultEx.task
+      test: defaultEx.test
+    @exercises.push ex
     @buildLinks()
     @activate @exercises.length
 
@@ -134,10 +145,17 @@ class ExerciseManager
 
   activate: (index) ->
     @select index
+    @save()
     @activeIndex = index - 1
     ex = @exercises[@activeIndex]
     @mirror.mdEditor.setValue ex.task
     @mirror.jsEditor.setValue ex.test
+
+  save: ->
+    if @activeIndex?
+      ex = @exercises[@activeIndex]
+      ex.task = @mirror.mdEditor.getValue()
+      ex.test = @mirror.jsEditor.getValue()
 
   select: (index) ->
     @$exList.children().removeClass 'selected'
