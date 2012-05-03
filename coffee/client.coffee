@@ -72,8 +72,8 @@ $ ->
 
   requestId = ->
     unless window.location.hash
-      window.location.hash = "#2"
-    lesson_id = parseInt((window.location.hash.split "#")[1])
+      window.location.hash = "#1"
+    parseInt((window.location.hash.split "#")[1])
 
   lesson = new Lesson requestId()
   if lesson.exercises?

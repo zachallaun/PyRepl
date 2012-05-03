@@ -84,12 +84,16 @@ class ExerciseManager
     @getLesson(@lessonId)
     @getExercises(@lessonId)
 
+    @setOnBlurSaves()
+
     @$exList.on 'click', 'li', (ev) =>
       target = $(ev.currentTarget)
       if target.hasClass 'new-ex'
         @buildDefault()
       else
         @activate parseInt target.text()
+
+    window.saveExercise = @saveExercise
 
   setLessonId: ->
     unless window.location.hash
@@ -98,7 +102,7 @@ class ExerciseManager
 
   getLesson: ->
     $.ajax
-      method: 'GET'
+      type: 'GET'
       url: Q.filter 'lesson', 'id', 'eq', @lessonId
       dataType: 'json'
       success: (data) =>
@@ -114,22 +118,44 @@ class ExerciseManager
 
   getExercises: ->
     $.ajax
-      method: 'GET'
+      type: 'GET'
       url: Q.filter 'exercise', 'lesson_id', 'eq', @lessonId
       dataType: 'json'
       success: (data) =>
-        @populateExercises(data)
+        @exercises = data.objects
+        @buildLinks()
       error: (xhr, text, err) ->
         console.log text, err
 
-  populateExercises: (data) ->
-    @exercises = data.objects
-    @buildLinks()
+  saveExercise: (ex) =>
+    if ex.id?
+      @updateExercise ex
+    else
+      @postExercise ex
+
+  updateExercise: (ex) ->
+    $.ajax
+      type: 'PUT'
+      url: "/api/exercise/#{ex.id}"
+      contentType: 'application/json'
+      dataType: 'json'
+      data: JSON.stringify ex
+
+  postExercise: (ex) ->
+    $.ajax
+      type: 'POST'
+      url: '/api/exercise'
+      contentType: 'application/json'
+      dataType: 'json'
+      data: JSON.stringify ex
+      success: (data) ->
+        ex.id = data.id
 
   buildDefault: ->
     ex =
       task: defaultEx.task
       test: defaultEx.test
+      lesson_id: @lessonId
     @exercises.push ex
     @buildLinks()
     @activate @exercises.length
@@ -140,6 +166,7 @@ class ExerciseManager
       $exs = ("<li><strong>#{i}</strong></li>" for i in [1..@exercises.length])
       $exs.push "<li class='new-ex'><strong>+</strong></li>"
       @$exList.html $exs.join ''
+      @activate 1
     else
       @buildDefault()
 
@@ -156,6 +183,13 @@ class ExerciseManager
       ex = @exercises[@activeIndex]
       ex.task = @mirror.mdEditor.getValue()
       ex.test = @mirror.jsEditor.getValue()
+
+  setOnBlurSaves: ->
+    saveEx = =>
+      @save()
+      @saveExercise @exercises[@activeIndex]
+    @mirror.mdEditor.setOption 'onBlur', saveEx
+    @mirror.jsEditor.setOption 'onBlur', saveEx
 
   select: (index) ->
     @$exList.children().removeClass 'selected'

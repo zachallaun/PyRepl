@@ -89,10 +89,12 @@
     function ExerciseManager(mirror) {
       var _this = this;
       this.mirror = mirror;
+      this.saveExercise = __bind(this.saveExercise, this);
       this.$exList = $("#ex-list");
       this.setLessonId();
       this.getLesson(this.lessonId);
       this.getExercises(this.lessonId);
+      this.setOnBlurSaves();
       this.$exList.on('click', 'li', function(ev) {
         var target;
         target = $(ev.currentTarget);
@@ -102,6 +104,7 @@
           return _this.activate(parseInt(target.text()));
         }
       });
+      window.saveExercise = this.saveExercise;
     }
 
     ExerciseManager.prototype.setLessonId = function() {
@@ -112,7 +115,7 @@
     ExerciseManager.prototype.getLesson = function() {
       var _this = this;
       return $.ajax({
-        method: 'GET',
+        type: 'GET',
         url: Q.filter('lesson', 'id', 'eq', this.lessonId),
         dataType: 'json',
         success: function(data) {
@@ -135,11 +138,12 @@
     ExerciseManager.prototype.getExercises = function() {
       var _this = this;
       return $.ajax({
-        method: 'GET',
+        type: 'GET',
         url: Q.filter('exercise', 'lesson_id', 'eq', this.lessonId),
         dataType: 'json',
         success: function(data) {
-          return _this.populateExercises(data);
+          _this.exercises = data.objects;
+          return _this.buildLinks();
         },
         error: function(xhr, text, err) {
           return console.log(text, err);
@@ -147,16 +151,43 @@
       });
     };
 
-    ExerciseManager.prototype.populateExercises = function(data) {
-      this.exercises = data.objects;
-      return this.buildLinks();
+    ExerciseManager.prototype.saveExercise = function(ex) {
+      if (ex.id != null) {
+        return this.updateExercise(ex);
+      } else {
+        return this.postExercise(ex);
+      }
+    };
+
+    ExerciseManager.prototype.updateExercise = function(ex) {
+      return $.ajax({
+        type: 'PUT',
+        url: "/api/exercise/" + ex.id,
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(ex)
+      });
+    };
+
+    ExerciseManager.prototype.postExercise = function(ex) {
+      return $.ajax({
+        type: 'POST',
+        url: '/api/exercise',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(ex),
+        success: function(data) {
+          return ex.id = data.id;
+        }
+      });
     };
 
     ExerciseManager.prototype.buildDefault = function() {
       var ex;
       ex = {
         task: defaultEx.task,
-        test: defaultEx.test
+        test: defaultEx.test,
+        lesson_id: this.lessonId
       };
       this.exercises.push(ex);
       this.buildLinks();
@@ -176,7 +207,8 @@
           return _results;
         }).call(this);
         $exs.push("<li class='new-ex'><strong>+</strong></li>");
-        return this.$exList.html($exs.join(''));
+        this.$exList.html($exs.join(''));
+        return this.activate(1);
       } else {
         return this.buildDefault();
       }
@@ -199,6 +231,17 @@
         ex.task = this.mirror.mdEditor.getValue();
         return ex.test = this.mirror.jsEditor.getValue();
       }
+    };
+
+    ExerciseManager.prototype.setOnBlurSaves = function() {
+      var saveEx,
+        _this = this;
+      saveEx = function() {
+        _this.save();
+        return _this.saveExercise(_this.exercises[_this.activeIndex]);
+      };
+      this.mirror.mdEditor.setOption('onBlur', saveEx);
+      return this.mirror.jsEditor.setOption('onBlur', saveEx);
     };
 
     ExerciseManager.prototype.select = function(index) {

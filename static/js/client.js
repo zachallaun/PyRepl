@@ -119,9 +119,8 @@
 
     })();
     requestId = function() {
-      var lesson_id;
-      if (!window.location.hash) window.location.hash = "#2";
-      return lesson_id = parseInt((window.location.hash.split("#"))[1]);
+      if (!window.location.hash) window.location.hash = "#1";
+      return parseInt((window.location.hash.split("#"))[1]);
     };
     lesson = new Lesson(requestId());
     if (lesson.exercises != null) {
