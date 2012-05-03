@@ -36,7 +36,7 @@
         if (task) {
           $ex.html(markdown.toHTML(task));
         } else {
-          $ex.html(markdown.toHTML("**AT'LL DO, PIG**"));
+          $ex.html(markdown.toHTML("**Congratulations!** You've finished this lesson."));
         }
         return $ex.fadeIn(1000);
       };

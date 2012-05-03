@@ -36,9 +36,9 @@ db.create_all()
 # Configure Restless
 manager = APIManager(app, flask_sqlalchemy_db=db)
 
-manager.create_api(Lesson, methods=['GET', 'POST', 'PUT', 'PATCH'])
+manager.create_api(Lesson)
 # Lesson can include_columns=['title', 'exercises']
-manager.create_api(Exercise, methods=['GET', 'POST', 'PUT', 'PATCH'])
+manager.create_api(Exercise)
 
 # Controller
 @app.route('/')
