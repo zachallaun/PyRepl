@@ -1,7 +1,7 @@
 $ ->
   class Tutor
     constructor: (@lesson) ->
-      $("h1.standout").append(": #{@lesson.title}")
+      $("h2.title").text(@lesson.title)
 
       @exercises = @lesson.exercises
       @current = @next()

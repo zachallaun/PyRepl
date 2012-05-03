@@ -17,6 +17,10 @@ html, body {
   padding: 0;
 }
 
+.hidden {
+  display: hidden;
+}
+
 h1.standout {
   color: #eee8d5;
   text-align: center;
@@ -29,14 +33,25 @@ h1.standout {
                -1px -1px #cb4b16;
 }
 
+.title {
+  text-align: center;
+  line-height: 5px;
+  padding-bottom: 5px;
+}
+
 pre {
   font-family: Inconsolata;
 }
 
 .wrapper {
-  width: 750px;
+  max-width: 750px;
   margin: 0 auto;
   margin-top: 0;
+  padding: 0 20px;
+}
+
+.wide {
+  max-width: 900px;
 }
 
 #console {
@@ -108,25 +123,27 @@ code {
   padding: 0 2px;
 }
 
-form {
+#exercise-input {
   margin: 20px 0;
 }
 
-form textarea {
-  height: 200px;
+#exercise-input textarea {
+  display: none;
 }
 
 .CodeMirror {
-  float: right;
-  width: 365px;
+  float: left;
+  width: 440px;
 }
 
 .CodeMirror-scroll {
-  height: 200px;
+  height: 250px;
 }
 
 .first-CodeMirror {
-  float: left;
+  margin-right: 20px;
+  margin-bottom: 20px;
+
 }
 
 form.new-lesson {

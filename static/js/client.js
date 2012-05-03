@@ -9,7 +9,7 @@
         this.lesson = lesson;
         this.validate = __bind(this.validate, this);
         this.watch = __bind(this.watch, this);
-        $("h1.standout").append(": " + this.lesson.title);
+        $("h2.title").text(this.lesson.title);
         this.exercises = this.lesson.exercises;
         this.current = this.next();
         this.completed = [];

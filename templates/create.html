@@ -3,46 +3,21 @@
 {% block main %}
     <link rel="stylesheet" href="{{url_for('static', filename='style/ansi.css')}}"/>
     <link rel="stylesheet" href="{{url_for('static', filename='style/codemirror.css')}}"/>
-    <link rel="stylesheet" href="{{url_for('static', filename='style/blackboard.css')}}"/>
+    <link rel="stylesheet" href="{{url_for('static', filename='style/ambiance.css')}}"/>
     <link rel="stylesheet" href="{{url_for('static', filename='style/pyrepl.css')}}"/>
   </head>
 <body>
-<h1 class="standout">CREATE</h1>
-<h2 class="title"></h2>
-<div class="wrapper">
-  <ul id="ex-list">
-    <li class="selected"><strong>1</strong></li>
-    <li class="new-ex"><strong>+</strong></li>
-  </ul>
+<div class="wrapper wide hidden">
+  <h1 class="standout">CREATE</h1>
+  <h2 class="title"></h2>
+  <ul id="ex-list"></ul>
   <div id="console" class="create-console"></div>
   <div id="exercise"></div>
-
-  <form>
-    <div id="exercise_input">
-      <div>
-        <textarea id="ex-description" name="task">
-**Write your exercise in Markdown.** You'll see changes made as you edit.</textarea>
-      </div>
-      <div>
-        <textarea id="ex-code" name="test">
-// Javascript validation function.
-//
-// You have access to
-// the following variables:
-//
-// code   => What the user submits
-// result => What the code would return
-// output => Any output that would go to
-//           stdin or stderr
-
-function () {
-  // Must return true or false.
-  return true;
-}</textarea>
-      </div>
-      {# <input type="submit" value="Save"/> #}
-    </div>
-  </form>
+  <div id="exercise-input">
+    <textarea id="ex-description" name="task"></textarea>
+    <textarea id="ex-code" name="test"></textarea>
+    {# <input type="submit" value="Save"/> #}
+  </div>
 </div>
 
 <!-- Scripts at the bottom! -->
