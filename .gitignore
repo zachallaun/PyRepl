@@ -1,6 +1,4 @@
-lib/
 *.pyc
 venv
-static/.webassets-cache
-static/js/scripts.js
 db
+public/lib
