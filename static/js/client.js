@@ -110,6 +110,12 @@
               op: 'eq',
               val: val
             }
+          ],
+          order_by: [
+            {
+              field: 'id',
+              direction: 'asc'
+            }
           ]
         };
         return "?q=" + (JSON.stringify(query));

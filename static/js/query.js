@@ -16,6 +16,12 @@
             op: op,
             val: val
           }
+        ],
+        order_by: [
+          {
+            field: 'id',
+            direction: 'asc'
+          }
         ]
       };
       return "" + this.url + "/api/" + resource + "?q=" + (JSON.stringify(query));
