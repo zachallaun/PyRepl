@@ -63,11 +63,16 @@ $ ->
       @title = JSON.parse(query.responseText).objects[0].title
 
     buildEqQuery: (name, val) ->
-      query = filters: [
-        name: name
-        op: 'eq'
-        val: val
-      ]
+      query = 
+        filters: [
+          name: name
+          op: 'eq'
+          val: val
+        ]
+        order_by: [
+          field: 'id'
+          direction: 'asc'
+        ]
       "?q=#{JSON.stringify query}"
 
   requestId = ->
