@@ -2,7 +2,8 @@ import os
 BASE_PATH = os.path.dirname(os.path.realpath(__file__))
 
 from flask import Flask
-app = Flask(__name__)
+app = Flask(__name__, static_folder=os.path.join(BASE_PATH, 'public'),
+            static_url_path='/public')
 
 from flask_heroku import Heroku
 heroku = Heroku(app)

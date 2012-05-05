@@ -1,0 +1,239 @@
+@font-face {
+    font-family: 'Inconsolata';
+    src: url('font/Inconsolata-webfont.eot');
+    src: url('font/Inconsolata-webfont.eot?#iefix') format('embedded-opentype'),
+         url('font/Inconsolata-webfont.woff') format('woff'),
+         url('font/Inconsolata-webfont.ttf') format('truetype'),
+         url('font/Inconsolata-webfont.svg#InconsolataMedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body {
+  background-color: #073642;
+  color: #cb4b16;
+  font-family: Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+h1.standout {
+  color: #eee8d5;
+  text-align: center;
+  font-size: 50px;
+  line-height: 35px;
+  text-shadow: -5px -5px #cb4b16,
+               -4px -4px #cb4b16,
+               -3px -3px #cb4b16,
+               -2px -2px #cb4b16,
+               -1px -1px #cb4b16;
+}
+
+.title {
+  text-align: center;
+  line-height: 5px;
+  padding-bottom: 5px;
+}
+
+pre {
+  font-family: Inconsolata;
+}
+
+.wrapper {
+  max-width: 750px;
+  margin: 0 auto;
+  margin-top: 0;
+  padding: 0 20px;
+}
+
+.wide {
+  max-width: 900px;
+}
+
+#console {
+  height: 325px;
+  position:relative;
+  background-color: #eee8d5;
+  border: 2px solid #93a1a1;
+  color: #268bd2;
+}
+
+#console .error {
+  color: #cb4b16;
+}
+
+#console.create-console {
+  height: 100px;
+}
+
+#ex-list {
+  padding: 0;
+}
+
+#ex-list li {
+  margin-right: 5px;
+  padding: 0 5px;
+  padding-top: 2px;
+  border: 2px solid #93a1a1;
+  background-color: #eee8d5;
+  display: inline;
+  list-decoration: none;
+  cursor: pointer;
+}
+
+#ex-list li:hover {
+  background-color: #cb4b16;
+  color: #eee8d5;
+}
+
+#ex-list li.selected {
+  background-color: #cb4b16;
+  color: #eee8d5;
+  cursor: auto;
+}
+
+span.result span, span.output span {
+  width: 700px;
+  word-wrap: break-word;
+}
+
+#exercise {
+  max-height: 250px;
+  overflow: scroll;
+  position:relative;
+  margin-top: 20px;
+  background-color: #eee8d5;
+  border: 2px solid #93a1a1;
+  padding: 0 20px;
+  display: none;
+}
+
+p {
+  font-size: 18px;
+  color: #073642;
+}
+
+code {
+  color: #d33682;
+  /*background-color: #073642;*/
+  padding: 0 2px;
+}
+
+#exercise-input {
+  margin: 20px 0;
+}
+
+#exercise-input textarea {
+  display: hidden;
+}
+
+.CodeMirror {
+  float: left;
+  width: 440px;
+}
+
+.CodeMirror-scroll {
+  height: 250px;
+}
+
+.first-CodeMirror {
+  margin-right: 20px;
+  margin-bottom: 20px;
+
+}
+
+form.new-lesson {
+  width: 350px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+form.new-lesson input, form.new-lesson textarea {
+  display: block;
+  width: 100%;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+form.new-lesson textarea {
+  height: 100px;
+}
+
+form.new-lesson input {
+  font-size: 24px;
+}
+
+.button {
+  display: block;
+  text-align: center;
+}
+
+#submit {
+  font-size: 24px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.ajax-error {
+  font-size: 24px;
+  display: none;
+}
+
+/********************************/
+/*****   jq console style   *****/
+/********************************/
+
+.jqconsole {
+  padding: 10px;
+  padding-bottom: 10px;
+}
+
+.jqconsole-header {
+  color: #d33682;
+}
+
+.jqconsole-cursor {
+  background-color: #839496;
+}
+
+.jqconsole-blurred .jqconsole-cursor {
+  background-color: #93a1a1;
+}
+
+.jqconsole-prompt {
+  color: #073642;
+}
+
+.jqconsole-old-prompt {
+  color: #657b83;
+  font-weight: normal;
+}
+
+.jqconsole-input {
+  color: #93a1a1;
+}
+
+.jqconsole-old-input {
+  color: #93a1a1;
+  font-weight: normal;
+}
+
+.brace {
+  color: #6c71c4;
+}
+
+.paren {
+  color: #268bd2;
+}
+
+.bracket {
+  color: #859900;
+}
+
+.jqconsole-composition {
+  background-color: red;
+}
