@@ -4,7 +4,7 @@
 
   defaultEx = {
     task: "**Write your exercise in Markdown.** You'll see changes made as you edit.\n\n**Test your validations** in the Python REPL above. Any changes you make to your exercise's validation function will be immediately testable.",
-    test: "// Javascript validation function.\n//\n// You have access to the following\n// variables:\n//\n// code   => What the user submits\n// result => What the code would return\n// output => Any output that would go to\n//           stdin or stderr\n\nfunction () {\n  // Must return a boolean.\n  return true;\n}"
+    test: "function () {\n  // Returns a boolean.\n  var validCode = true;\n  var validResult = true;\n  var validOutput = true;\n\n  return validCode && validResult && validOutput;\n}"
   };
 
   Tester = (function() {

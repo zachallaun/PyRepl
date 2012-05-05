@@ -7,22 +7,25 @@ defaultEx =
     """
   test: 
     """
-    // Javascript validation function.
-    //
-    // You have access to the following
-    // variables:
-    //
-    // code   => What the user submits
-    // result => What the code would return
-    // output => Any output that would go to
-    //           stdin or stderr
-
     function () {
-      // Must return a boolean.
-      return true;
+      // Returns a boolean.
+      var validCode = true;
+      var validResult = true;
+      var validOutput = true;
+
+      return validCode && validResult && validOutput;
     }
     """
-
+    # Needs to be added somewhere:
+    # // Javascript validation function.
+    # //
+    # // You have access to the following
+    # // variables:
+    # //
+    # // code   => What the user submits
+    # // result => What the code would return
+    # // output => Any output that would go to
+    # //           stdin or stderr
 
 class Tester
   constructor: () ->
